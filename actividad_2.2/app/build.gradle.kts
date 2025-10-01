@@ -40,7 +40,8 @@ android {
 }
 
 dependencies {
-    implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.9.5")
+    // LÍNEA ELIMINADA: implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.9.5")
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")

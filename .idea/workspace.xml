@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c93832d5-fb84-4d74-9ec3-2d1d87174e05" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/Huerto Hogar 1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/Huerto Hogar 2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/aceite.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/almendras.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/apio.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/canela.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/cebolla.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/col.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/frutilla.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/garbanzo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/leche.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/lechuga.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/maiz.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/mantequilla.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/manzana.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/miel.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/naranja.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/palta.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/papas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/pera.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/pimiento.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/platano.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/queso.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/repollo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/sandia.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/te.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/tomate-organico.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/yogurt.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/img/zanahoria.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../DesarrolloWeb/Pag_Web/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../Examen.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/.idea/codeStyles/Project.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/gradle.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/settings.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/src/main/kotlin/Main.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/src/main/kotlin/Model/Bebida.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/src/main/kotlin/Model/Comida.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/src/main/kotlin/Model/Producto.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Trabajo_1/src/main/kotlin/Service/PedidoServices.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/.idea/kotlinc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/build.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/gradle.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/settings.gradle.kts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/src/main/kotlin/Client.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/src/main/kotlin/ClientType.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/src/main/kotlin/Drink.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/src/main/kotlin/DrinkSize.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/src/main/kotlin/Food.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/src/main/kotlin/Main.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/src/main/kotlin/Order.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/src/main/kotlin/ProductBase.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../harvey/src/main/kotlin/Status.kt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\Luis\.android\avd\Medium_Phone.avd)]" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/app">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Actividad_2.2" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;history&quot;: [
+    {
+      &quot;state&quot;: &quot;OPEN&quot;
+    }
+  ],
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/hckblack84/Android_Studio&quot;,
+    &quot;accountId&quot;: &quot;1333386b-d7fc-43f9-83b1-8cf945a36bf5&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="33TsWX3BjACRsGCrznea7R4mQQj" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "android.gradle.sync.needed": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.2"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\TrabajosDuoc\codigos\Kotlin\Actividad_2.2\actividad_2.2" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="Actividad_2.2.app" />
+      <option name="ANDROID_RUN_CONFIGURATION_SCHEMA_VERSION" value="1" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ALL_USERS" value="false" />
+      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
+      <option name="ALLOW_ASSUME_VERIFIED" value="false" />
+      <option name="CLEAR_APP_STORAGE" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="RESTORE_ENABLED" value="false" />
+      <option name="RESTORE_FILE" value="" />
+      <option name="RESTORE_FRESH_INSTALL_ONLY" value="false" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Hybrid>
+      <Java>
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Java>
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
+        <option name="DEBUG_SANDBOX_SDK" value="false" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c93832d5-fb84-4d74-9ec3-2d1d87174e05" name="Changes" comment="" />
+      <created>1759352429274</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1759352429274</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="ca7bf66c-b8d6-4629-9295-5ec429d01add" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="RECENT_FILTERS">
+      <map>
+        <entry key="Branch">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="main" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="origin/main" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+        <entry key="User">
+          <value>
+            <list>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="*" />
+                </option>
+              </RecentGroup>
+            </list>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+        <entry key="ca7bf66c-b8d6-4629-9295-5ec429d01add">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="TEXT_FILTER_SETTINGS">
+                <TextFilterSettings>
+                  <option name="MATCH_CASE" value="true" />
+                </TextFilterSettings>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

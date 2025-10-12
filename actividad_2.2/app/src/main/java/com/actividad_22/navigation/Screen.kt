@@ -5,6 +5,10 @@ sealed class Screen(val route : String){
     data object Profile : Screen(route = "profile_page")
     data object Settings : Screen(route = "settings_page")
 
+    data object Store : Screen(route = "Store_Page")
+
+    data object  Us : Screen(route = "Us_Page" )
+
     data class Details(val itemId: String): Screen(route = "detail_page/{itemId}"){
         fun builRoute(): String{
             return route.replace(oldValue = "{itemId}", newValue = itemId)

@@ -24,6 +24,8 @@ import com.actividad_22.viewmodels.HomeScreen
 import com.actividad_22.viewmodels.MainViewModel
 import com.actividad_22.viewmodels.ProfileScreen
 import com.actividad_22.viewmodels.SettingsScreen
+import com.actividad_22.viewmodels.StoreScreen
+import com.actividad_22.viewmodels.UsScreen
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -78,6 +80,14 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = Screen.Settings.route) {
                             SettingsScreen(navController = navController, viewModel = viewModel)
+                        }
+
+                        composable (route= Screen.Store.route){
+                            StoreScreen(navController= navController, viewModel= viewModel)
+                        }
+
+                        composable (route = Screen.Us.route){
+                            UsScreen(navController= navController, viewModel= viewModel)
                         }
                     }
                 }

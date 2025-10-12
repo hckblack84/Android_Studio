@@ -50,12 +50,27 @@ fun HomeScreen(
         ModalDrawerSheet {
             Text( text = "Menu ", modifier = Modifier.padding(all = 16.dp))
             NavigationDrawerItem(
-                label = {Text(text = "ir a Perfil")},
+                label = {Text(text = "Perfil")},
                 selected = false,
                 onClick = {scope.launch { drawerState.close() }
                 viewModel.navigateTo(Screen.Profile)
                 }
+
             )
+            NavigationDrawerItem(
+                label = {Text(text = "Tienda")},
+                selected = false,
+                onClick = {scope.launch { drawerState.close() }
+                viewModel.navigateTo(Screen.Store)}
+            )
+            NavigationDrawerItem(
+                label = {Text(text = "Nosotros" )},
+                selected = false,
+                onClick = {scope.launch { drawerState.close() }
+                viewModel.navigateTo(Screen.Us)}
+
+            )
+
         }
     }
     ){

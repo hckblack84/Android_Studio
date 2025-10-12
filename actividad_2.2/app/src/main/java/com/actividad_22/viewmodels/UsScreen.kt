@@ -3,6 +3,7 @@ package com.actividad_22.viewmodels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -97,5 +98,11 @@ fun UsScreen(
             }
 
         }
+        Button(
+            onClick = {
+                viewModel.navigateTo(Screen.Home)
+
+            }
+        ){Text(text = "Volver al inicio")}
     }
 }

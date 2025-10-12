@@ -70,6 +70,12 @@ fun HomeScreen(
                 viewModel.navigateTo(Screen.Us)}
 
             )
+            NavigationDrawerItem(
+                label = {Text(text = "Eventos")},
+                selected = false,
+                onClick = {scope.launch {  drawerState.close()}
+                viewModel.navigateTo(Screen.Event)}
+            )
 
         }
     }

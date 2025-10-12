@@ -20,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.actividad_22.navigation.NavigationEvent
 import com.actividad_22.navigation.Screen
 import com.actividad_22.ui.theme.Actividad_22Theme
+import com.actividad_22.viewmodels.EventScreen
 import com.actividad_22.viewmodels.HomeScreen
 import com.actividad_22.viewmodels.MainViewModel
 import com.actividad_22.viewmodels.ProfileScreen
@@ -88,6 +89,9 @@ class MainActivity : ComponentActivity() {
 
                         composable (route = Screen.Us.route){
                             UsScreen(navController= navController, viewModel= viewModel)
+                        }
+                        composable (route= Screen.Event.route){
+                            EventScreen(navController = navController, viewModel= viewModel)
                         }
                     }
                 }

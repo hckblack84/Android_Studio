@@ -44,10 +44,15 @@ fun StoreScreen(
         ) { Text(text = "Volver al inicio")
         }
         Spacer(modifier = Modifier.height(16.dp))
+
+        Column (modifier = Modifier.fillMaxSize().padding(16.dp),
+            horizontalAlignment = Alignment.End,
+            verticalArrangement = Arrangement.Bottom){
         Button(
             onClick = {
                 viewModel.navigateTo(Screen.Profile)
             }
         ) {Text(text = "Ir al perfil") }
+    }
     }
 }

@@ -75,7 +75,12 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(route = Screen.Profile.route) {
-                            ProfileScreen(navController = navController, viewModel = viewModel)
+                            val userViewModel: UserViewModel = viewModel()  // Crea el UserViewModel
+                            ProfileScreen(
+                                navController = navController,
+                                viewModel = viewModel,
+                                userViewModel = userViewModel  // Pásalo aquí
+                            )
                         }
 
                         composable(route = Screen.Settings.route) {
@@ -93,8 +98,8 @@ class MainActivity : ComponentActivity() {
                             EventScreen(navController = navController, viewModel = viewModel)
                         }
                         composable(route = Screen.Register.route) {
-                            val userViewModel: UserViewModel = viewModel()  // ✅ AGREGADO
-                            RegisterScreen(navController = navController, viewModel = userViewModel)  // ✅ CORREGIDO
+                            val userViewModel: UserViewModel = viewModel()
+                            RegisterScreen(navController = navController, viewModel = userViewModel)
                         }
                     }
                 }

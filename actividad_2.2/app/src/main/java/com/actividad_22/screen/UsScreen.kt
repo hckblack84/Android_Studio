@@ -1,4 +1,4 @@
-package com.actividad_22.viewmodels
+package com.actividad_22.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -18,6 +18,7 @@ import com.actividad_22.R
 
 import androidx.navigation.NavController
 import com.actividad_22.navigation.Screen
+import com.actividad_22.viewmodel.MainViewModel
 
 
 @Composable

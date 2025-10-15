@@ -1,4 +1,4 @@
-package com.actividad_22.viewmodels
+package com.actividad_22.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,7 +33,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.layout.AlignmentLine
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -44,6 +43,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.actividad_22.R
 import com.actividad_22.navigation.Screen
+import com.actividad_22.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -105,7 +105,7 @@ fun HomeScreen(
                         selected = false,
                         onClick = {
                             scope.launch { drawerState.close() }
-                            viewModel.navigateTo(Screen.Event)
+                            viewModel.navigateBack()
                         }
                     )
 
@@ -226,7 +226,7 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(height = 24.dp))
 
                     Button(
-                        onClick = { viewModel.navigateTo(Screen.Home) },
+                        onClick = { viewModel.navigateTo(Screen.Register) },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF1976D2), // Azul
                             contentColor = Color.White

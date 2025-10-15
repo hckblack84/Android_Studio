@@ -1,4 +1,4 @@
-package com.actividad_22.viewmodels
+package com.actividad_22.screen
 
 
 import androidx.compose.foundation.layout.Arrangement
@@ -21,11 +21,11 @@ import androidx.compose.ui.unit.dp
 
 import androidx.navigation.NavController
 import com.actividad_22.navigation.Screen
-
+import com.actividad_22.viewmodel.MainViewModel
 
 
 @Composable
-fun StoreScreen(
+fun SettingsScreen(
     navController: NavController,
     viewModel: MainViewModel
 ){
@@ -34,7 +34,7 @@ fun StoreScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Text(text = "Pantalla de Tienda")
+        Text(text = "Pantalla de Configuracion (Settings)")
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
@@ -43,16 +43,11 @@ fun StoreScreen(
             }
         ) { Text(text = "Volver al inicio")
         }
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Column (modifier = Modifier.fillMaxSize().padding(16.dp),
-            horizontalAlignment = Alignment.End,
-            verticalArrangement = Arrangement.Bottom){
-        Button(
-            onClick = {
-                viewModel.navigateTo(Screen.Profile)
-            }
-        ) {Text(text = "Ir al perfil") }
-    }
+           Spacer(modifier = Modifier.height(16.dp))
+    Button(
+        onClick = {
+            viewModel.navigateTo(Screen.Profile)
+        }
+    ) {Text(text = "Ir al perfil") }
     }
 }

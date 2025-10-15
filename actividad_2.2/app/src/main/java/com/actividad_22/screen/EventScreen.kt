@@ -1,4 +1,4 @@
-package com.actividad_22.viewmodels
+package com.actividad_22.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,18 +11,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalOf
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.actividad_22.navigation.Screen
-
+import com.actividad_22.viewmodel.MainViewModel
 
 
 @Composable
 fun EventScreen(
     navController: NavController,
-    viewModel: MainViewModel){
+    viewModel: MainViewModel
+){
     Column (
         modifier = Modifier.fillMaxSize().padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,

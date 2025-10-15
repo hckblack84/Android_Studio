@@ -1,4 +1,4 @@
-package com.actividad_22.viewmodels
+package com.actividad_22.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.actividad_22.navigation.NavigationEvent
@@ -17,7 +17,7 @@ class MainViewModel : ViewModel(){
 
 
     fun navigateTo(screen: Screen){
-        CoroutineScope(context = Dispatchers.Main).launch{
+        CoroutineScope(context = Dispatchers.Main).launch {
             _navigationEvents.emit(value = NavigationEvent.Navigateto(route = screen))
         }
     }

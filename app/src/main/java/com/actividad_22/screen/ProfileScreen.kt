@@ -1,7 +1,15 @@
 package com.actividad_22.screen
 
+import android.Manifest
+import android.content.Context
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -12,14 +20,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.MainViewModel
 import com.actividad_22.viewmodel.UserViewModel
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,32 +44,58 @@ fun ProfileScreen(
     viewModel: MainViewModel = viewModel(),
     userViewModel: UserViewModel = viewModel()
 ) {
-    val item = listOf(Screen.Home, Screen.Profile)
+
     var selectedItem by remember { mutableStateOf(1) }
     val estado by userViewModel.estado.collectAsState()
+    val context = LocalContext.current
+
+
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var showDialog by remember { mutableStateOf(false) }
+    var tempPhotoUri by remember { mutableStateOf<Uri?>(null) }
+
+
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) {
+            imageUri = tempPhotoUri
+            Toast.makeText(context, "Foto guardada", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "Error ", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            imageUri = it
+            Toast.makeText(context, "Imagen seleccionada", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Launcher para permisos de cámara
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            showDialog = true
+        } else {
+            Toast.makeText(context, "Permiso de camara denegado", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     Scaffold(
-        bottomBar = {
-            NavigationBar {
-                item.forEachIndexed { index, screen ->
-                    NavigationBarItem(
-                        selected = selectedItem == index,
-                        onClick = {
-                            selectedItem = index
-                            viewModel.navigateTo(screen)
-                        },
-                        label = { Text(screen.route) },
-                        icon = {
-                            Icon(
-                                imageVector = if (screen == Screen.Home) Icons.Default.Home else Icons.Default.Person,
-                                contentDescription = screen.route
-                            )
-                        }
-                    )
-                }
-            }
-        }
-    ) { innerPadding ->
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "Perfil") },
+                actions = {
+                    Button(onClick = { viewModel.navigateTo(Screen.Home) }) {
+                        Text("Volver")
+                    }
+                })
+        }){ innerPadding ->
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -62,28 +104,30 @@ fun ProfileScreen(
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Header con avatar
             Spacer(modifier = Modifier.height(24.dp))
 
-            Box(
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Person,
-                    contentDescription = "Avatar",
-                    modifier = Modifier.size(64.dp),
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            }
+
+            ProfileImageWithCamera(
+                imageUri = imageUri,
+                onClick = {
+                    when (ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.CAMERA
+                    )) {
+                        android.content.pm.PackageManager.PERMISSION_GRANTED -> {
+                            showDialog = true
+                        }
+                        else -> {
+                            permissionLauncher.launch(Manifest.permission.CAMERA)
+                        }
+                    }
+                }
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = estado.nombre.ifEmpty { "Usuario" },
+                text = estado.nombre.ifEmpty { "*Nombre*" },
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
@@ -106,12 +150,15 @@ fun ProfileScreen(
             }
 
             Spacer(modifier = Modifier.height(32.dp))
-
-            // Tarjetas de información
+InfoCard(
+    icon = Icons.Default.Info,
+    label = "Nombre Completo",
+    value = estado.nombre.ifEmpty { "sin informacion" }
+)
             InfoCard(
                 icon = Icons.Default.Email,
                 label = "Correo Electrónico",
-                value = estado.correo.ifEmpty { "No proporcionado" }
+                value = estado.correo.ifEmpty { "sin informacion" }
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -119,7 +166,7 @@ fun ProfileScreen(
             InfoCard(
                 icon = Icons.Default.Lock,
                 label = "Contraseña",
-                value = if (estado.clave.isNotEmpty()) "••••••••" else "No configurada"
+                value = if (estado.clave.isNotEmpty()) "••••••••" else "Sin informacion"
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -127,33 +174,146 @@ fun ProfileScreen(
             InfoCard(
                 icon = Icons.Default.LocationOn,
                 label = "Dirección",
-                value = estado.direccion.ifEmpty { "No proporcionada" }
+                value = estado.direccion.ifEmpty { "Sin informacion" }
             )
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Botón de editar perfil
-            Button(
-                onClick = { viewModel.navigateTo(Screen.Register) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(56.dp),
-                shape = RoundedCornerShape(16.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = "Editar",
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Editar Perfil",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-            }
+
+
         }
     }
+
+
+    if (showDialog) {
+        ImagePickerDialog(
+            onDismiss = { showDialog = false },
+            onCameraClick = {
+                val uri = context.createImageUri()
+                tempPhotoUri = uri
+                cameraLauncher.launch(uri)
+                showDialog = false
+            },
+            onGalleryClick = {
+                galleryLauncher.launch("image/*")
+                showDialog = false
+            }
+        )
+    }
+}
+
+@Composable
+fun TopAppBtn(title: () -> Unit, icon: () -> Unit, onClick: () -> Unit) {
+    TODO("Not yet implemented")
+}
+
+@Composable
+fun ProfileImageWithCamera(
+    imageUri: Uri?,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .size(120.dp)
+
+            .background(MaterialTheme.colorScheme.primaryContainer)
+            .clickable { onClick() },
+        contentAlignment = Alignment.Center
+    ) {
+        if (imageUri != null) {
+            AsyncImage(
+                model = imageUri,
+                contentDescription = "Foto de perfil",
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Default.Person,
+                contentDescription = "Avatar",
+                modifier = Modifier.size(64.dp),
+                tint = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        }
+
+        // Ícono de cámara en la esquina
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .size(36.dp)
+                .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(6.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Default.CameraAlt,
+                contentDescription = "Cambiar foto",
+                tint = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
+
+@Composable
+fun ImagePickerDialog(
+    onDismiss: () -> Unit,
+    onCameraClick: () -> Unit,
+    onGalleryClick: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = {
+            Icon(
+                imageVector = Icons.Default.AddAPhoto,
+                contentDescription = null,
+                modifier = Modifier.size(32.dp)
+            )
+        },
+        title = {
+            Text(
+                text = "Seleccionar foto de perfil",
+                style = MaterialTheme.typography.headlineSmall
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                OutlinedButton(
+                    onClick = onCameraClick,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.CameraAlt,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text("Tomar foto")
+                }
+
+                OutlinedButton(
+                    onClick = onGalleryClick,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.PhotoLibrary,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text("Elegir de galería")
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Cancelar")
+            }
+        }
+    )
 }
 
 @Composable
@@ -212,4 +372,16 @@ fun InfoCard(
             }
         }
     }
+}
+
+
+fun Context.createImageUri(): Uri {
+    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+    val imageFileName = "PROFILE_$timeStamp.jpg"
+    val image = File(filesDir, imageFileName)
+    return FileProvider.getUriForFile(
+        this,
+        "${packageName}.fileprovider",
+        image
+    )
 }

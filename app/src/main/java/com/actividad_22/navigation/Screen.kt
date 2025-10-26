@@ -11,7 +11,11 @@ sealed class Screen(val route : String){
 
     data object  Event : Screen(route = "Event_page")
 
-    data object Register : Screen(route = "Register_Screen")
+    data object Start : Screen(route = "Start_page")
+
+    data object Login : Screen(route = "Login_page")
+
+    data object Register : Screen(route = "Register_page")
 
     data class Details(val itemId: String): Screen(route = "detail_page/{itemId}"){
         fun builRoute(): String{

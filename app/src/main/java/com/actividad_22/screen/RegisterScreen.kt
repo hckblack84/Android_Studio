@@ -12,7 +12,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,7 +24,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.actividad_22.navigation.*
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.UserViewModel
 
@@ -30,17 +31,26 @@ import com.actividad_22.viewmodel.UserViewModel
 @Composable
 fun RegisterScreen(
     navController: NavController,
-    viewModel: UserViewModel = viewModel()
+    viewModel: UserViewModel = viewModel(),
 ){
     val estado by viewModel.estado.collectAsState()
 
+
+    Surface (modifier = Modifier.fillMaxSize()){
+        Column(
+            modifier = Modifier.fillMaxSize().padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            Text(text = "Registrarse")
+        }
+    }
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         OutlinedTextField(
             value = estado.nombre,
-            onValueChange = viewModel::onNombreChange,  // ✅ CORREGIDO - Sin llaves
+            onValueChange = viewModel::onNombreChange,
             label = { Text(text = "Nombre") },
             isError = estado.errores.nombre != null,
             supportingText = {
@@ -48,12 +58,12 @@ fun RegisterScreen(
                     Text(text = it, color = MaterialTheme.colorScheme.error)
                 }
             },
-            modifier = Modifier.fillMaxWidth()  // ✅ También cambié fillMaxSize() a fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
             value = estado.correo,
-            onValueChange = viewModel::onCorreoChange,  // ✅ Este está correcto
+            onValueChange = viewModel::onCorreoChange,
             label = { Text(text = "Correo") },
             isError = estado.errores.correo != null,
             supportingText = {
@@ -61,7 +71,7 @@ fun RegisterScreen(
                     Text(text = it, color = MaterialTheme.colorScheme.error)
                 }
             },
-            modifier = Modifier.fillMaxWidth()  // ✅ Cambié a fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
@@ -75,12 +85,12 @@ fun RegisterScreen(
                     Text(text = it, color = MaterialTheme.colorScheme.error)
                 }
             },
-            modifier = Modifier.fillMaxWidth()  // ✅ Cambié a fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
             value = estado.direccion,
-            onValueChange = viewModel::onDirreccionChange,  // Nota: "Dirreccion" tiene doble 'r'
+            onValueChange = viewModel::onDirreccionChange,
             label = { Text(text = "Direccion") },
             isError = estado.errores.direccion != null,
             supportingText = {
@@ -88,7 +98,7 @@ fun RegisterScreen(
                     Text(text = it, color = MaterialTheme.colorScheme.error)
                 }
             },
-            modifier = Modifier.fillMaxWidth()  // ✅ Cambié a fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
 
         Row(verticalAlignment = Alignment.CenterVertically){
@@ -99,7 +109,9 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = "Acepto los terminos y condiciones")
         }
-
+        TextButton(onClick = {navController.navigate(Screen.Login.route)}) {
+            Text(text = "¿Ya tienes cuenta? Iniciar sesión")
+        }
         Button(
             onClick = {
                 if (viewModel.validarFormulario()){
@@ -111,9 +123,5 @@ fun RegisterScreen(
             Text("Registrar")
         }
 
-        Button(
-            onClick =  { navController.navigate(Screen.Home.route) },
-            modifier = Modifier.fillMaxWidth()
-        ) { Text("Volver al inicio")}
+        }
     }
-}

@@ -211,33 +211,21 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.height(height = 24.dp))
 
                     Button(
-                        onClick = { viewModel.navigateTo(Screen.Home) },
+                        onClick = { viewModel.navigateTo(Screen.Start) },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF1976D2), // Azul
                             contentColor = Color.White
                         )
                     ) {
                         Text(
-                            text = "IniciarSesion",
+                            text = "Cerrar Sesión",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Medium
                         )
                     }
                     Spacer(modifier = Modifier.height(height = 24.dp))
 
-                    Button(
-                        onClick = { viewModel.navigateTo(Screen.Register) },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF1976D2), // Azul
-                            contentColor = Color.White
-                        )
-                    ) {
-                        Text(
-                            text = "Registrarse",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Medium
-                        )
-                    }
+
                 }
             }
         }

@@ -1,7 +1,7 @@
 package com.actividad_22
+
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,10 +18,12 @@ import com.actividad_22.navigation.Screen
 import com.actividad_22.ui.theme.Actividad_22Theme
 import com.actividad_22.screen.EventScreen
 import com.actividad_22.screen.HomeScreen
+import com.actividad_22.screen.LoginScreen
 import com.actividad_22.viewmodel.MainViewModel
 import com.actividad_22.screen.ProfileScreen
 import com.actividad_22.screen.RegisterScreen
 import com.actividad_22.screen.SettingsScreen
+import com.actividad_22.screen.StartScreen  // ← IMPORTAR StartScreen
 import com.actividad_22.screen.StoreScreen
 import com.actividad_22.screen.UsScreen
 import com.actividad_22.viewmodel.UserViewModel
@@ -34,13 +36,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Actividad_22Theme {
-
-
                 val viewModel: MainViewModel = viewModel()
                 val navController = rememberNavController()
 
                 LaunchedEffect(key1 = Unit) {
-
                     viewModel.navigationEvents.collectLatest { event ->
                         when (event) {
                             is NavigationEvent.Navigateto -> {
@@ -60,26 +59,30 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 }
+
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
-
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.Home.route,
+                        startDestination = Screen.Start.route,  // ← AHORA SÍ FUNCIONA
                         modifier = Modifier.padding(innerPadding)
                     ) {
+                        // ← AGREGAR ESTA RUTA
+                        composable(route = Screen.Start.route) {
+                            StartScreen(navController = navController, viewModel = viewModel)
+                        }
 
                         composable(route = Screen.Home.route) {
                             HomeScreen(navController = navController, viewModel = viewModel)
                         }
 
                         composable(route = Screen.Profile.route) {
-                            val userViewModel: UserViewModel = viewModel()  // Crea el UserViewModel
+                            val userViewModel: UserViewModel = viewModel()
                             ProfileScreen(
                                 navController = navController,
                                 viewModel = viewModel,
-                                userViewModel = userViewModel  // Pásalo aquí
+                                userViewModel = userViewModel
                             )
                         }
 
@@ -94,12 +97,23 @@ class MainActivity : ComponentActivity() {
                         composable(route = Screen.Us.route) {
                             UsScreen(navController = navController, viewModel = viewModel)
                         }
+
                         composable(route = Screen.Event.route) {
                             EventScreen(navController = navController, viewModel = viewModel)
                         }
+
                         composable(route = Screen.Register.route) {
                             val userViewModel: UserViewModel = viewModel()
                             RegisterScreen(navController = navController, viewModel = userViewModel)
+                        }
+
+                        composable(route = Screen.Login.route) {
+                            val userViewModel: UserViewModel = viewModel()
+                            LoginScreen(
+                                navController = navController,
+                                viewModel = viewModel,
+                                userViewModel = userViewModel
+                            )
                         }
                     }
                 }
@@ -107,6 +121,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
-

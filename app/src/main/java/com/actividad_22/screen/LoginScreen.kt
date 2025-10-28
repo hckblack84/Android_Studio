@@ -43,9 +43,11 @@ fun LoginScreen(
 
             Button(
                 onClick = {
-                if (email.value == "Admin@duocuc.cl" && password.value == "admin1234") {
+                    userViewModel.
+
+                /*if (email.value == "Admin@duocuc.cl" && password.value == "admin1234") {
                     navController.navigate(route = Screen.Home.route)
-                }
+                }*/
             }, modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Iniciar Sesión")

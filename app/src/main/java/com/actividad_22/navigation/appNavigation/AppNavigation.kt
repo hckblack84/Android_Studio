@@ -21,7 +21,7 @@ fun AppNavigation(){
         composable(route = "Register"){
             RegisterScreen(
                 navController = navController,
-                viewModel = userViewModel  // ✅ CORREGIDO - Usa el nombre del parámetro
+                userViewModel = userViewModel  // ✅ CORREGIDO - Usa el nombre del parámetro
             )
         }
         composable(route = "Summary"){

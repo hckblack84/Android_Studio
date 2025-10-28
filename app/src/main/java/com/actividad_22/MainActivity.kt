@@ -123,7 +123,7 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = Screen.Register.route) {
                             val userViewModel: UserViewModel = viewModel()
-                            RegisterScreen(navController = navController, viewModel = userViewModel)
+                            RegisterScreen(navController = navController, userViewModel = userViewModel)
                         }
 
                         composable(route = Screen.Login.route) {

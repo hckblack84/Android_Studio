@@ -1,7 +1,5 @@
 package com.actividad_22.screen
 
-import android.widget.Button
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,7 +19,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,9 +30,9 @@ import com.actividad_22.viewmodel.UserViewModel
 @Composable
 fun RegisterScreen(
     navController: NavController,
-    viewModel: UserViewModel = viewModel(),
+    userViewModel: UserViewModel = viewModel(),
 ){
-    val estado by viewModel.estado.collectAsState()
+    val estado by userViewModel.estado.collectAsState()
 
 
     Surface (modifier = Modifier.fillMaxSize()){
@@ -52,7 +49,7 @@ fun RegisterScreen(
     ){
         OutlinedTextField(
             value = estado.nombre,
-            onValueChange = viewModel::onNombreChange,
+            onValueChange = userViewModel::onNombreChange,
             label = { Text(text = "Nombre") },
             isError = estado.errores.nombre != null,
             supportingText = {
@@ -65,7 +62,7 @@ fun RegisterScreen(
 
         OutlinedTextField(
             value = estado.correo,
-            onValueChange = viewModel::onCorreoChange,
+            onValueChange = userViewModel::onCorreoChange,
             label = { Text(text = "Correo") },
             isError = estado.errores.correo != null,
             supportingText = {
@@ -78,7 +75,7 @@ fun RegisterScreen(
 
         OutlinedTextField(
             value = estado.clave,
-            onValueChange = viewModel::onClaveChange,
+            onValueChange = userViewModel::onClaveChange,
             label = { Text(text = "Clave") },
             visualTransformation = PasswordVisualTransformation(),
             isError = estado.errores.clave != null,
@@ -92,7 +89,7 @@ fun RegisterScreen(
 
         OutlinedTextField(
             value = estado.direccion,
-            onValueChange = viewModel::onDirreccionChange,
+            onValueChange = userViewModel::onDirreccionChange,
             label = { Text(text = "Direccion") },
             isError = estado.errores.direccion != null,
             supportingText = {
@@ -106,7 +103,7 @@ fun RegisterScreen(
         Row(verticalAlignment = Alignment.CenterVertically){
             Checkbox(
                 checked = estado.aceptaTerminos,
-                onCheckedChange = viewModel::onAceptaTerminosChange
+                onCheckedChange = userViewModel::onAceptaTerminosChange
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = "Acepto los terminos y condiciones")
@@ -116,8 +113,10 @@ fun RegisterScreen(
         }
         Button(
             onClick = {
-                if (viewModel.validarFormulario()){
-                    navController.navigate(Screen.Profile.route)
+                if (userViewModel.validarFormulario()){
+                    userViewModel.addUser(estado.nombre, estado.correo, estado.clave, estado.direccion)
+
+                    navController.navigate(Screen.Login.route)
                 }
             },
             modifier = Modifier.fillMaxWidth()

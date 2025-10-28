@@ -1,6 +1,5 @@
 package com.actividad_22.navigation
 
-import android.health.connect.datatypes.ExerciseRoute
 
 sealed class NavigationEvent{
     data class Navigateto(
@@ -16,3 +15,6 @@ object NavigateUp: NavigationEvent()
 
 
 }
+/*
+*
+* */

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
@@ -23,8 +25,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.actividad_22.data.local.Client
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.UserViewModel
+import kotlinx.coroutines.flow.toList
 
 
 @Composable
@@ -33,6 +37,7 @@ fun RegisterScreen(
     userViewModel: UserViewModel = viewModel(),
 ){
     val estado by userViewModel.estado.collectAsState()
+    val clientList by userViewModel.allClients.collectAsState(initial = emptyList())
 
 
     Surface (modifier = Modifier.fillMaxSize()){
@@ -114,14 +119,36 @@ fun RegisterScreen(
         Button(
             onClick = {
                 if (userViewModel.validarFormulario()){
-                    userViewModel.addUser(estado.nombre, estado.correo, estado.clave, estado.direccion)
+                    userViewModel.insertClient(Client(name_client = estado.nombre,
+                                                    email_client = estado.correo,
+                                                    password_client = estado.clave,
+                                                    direction_client = estado.direccion))
 
-                    navController.navigate(Screen.Login.route)
+                    /*for (client:Client in userViewModel.allClients as List<Client>){
+                        println("===============================")
+                        println(client.name_client)
+                        println(client.email_client)
+                        println(client.password_client)
+                        println(client.direction_client)
+                        println("===============================")
+                    }*/
+
+                    //navController.navigate(Screen.Login.route)
                 }
             },
             modifier = Modifier.fillMaxWidth()
         ){
             Text("Registrar")
+        }
+
+        LazyColumn {
+            items(clientList) { client ->
+                Text(text = "id: ${client.id_client}")
+                Text(text = "name: ${client.name_client}")
+                Text(text = "email: ${client.email_client}")
+                Text(text = "password: ${client.password_client}")
+                Text(text = "direction: ${client.direction_client}")
+            }
         }
 
         }

@@ -1,6 +1,8 @@
 package com.actividad_22.screen
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -23,11 +25,11 @@ fun LoginScreen(
     viewModel: MainViewModel = viewModel(),
     userViewModel: UserViewModel = viewModel()
 ) {
-    // TODO: DESCOMENTAR CUANDO SE IMPLEMENTE LA LÓGICA DE LOGIN
     // val estado by viewModel.estado.collectAsState()
 
     val email = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
+    val clientList by userViewModel.allClients.collectAsState(initial = emptyList())
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -43,11 +45,16 @@ fun LoginScreen(
 
             Button(
                 onClick = {
-                    userViewModel.
-
-                /*if (email.value == "Admin@duocuc.cl" && password.value == "admin1234") {
-                    navController.navigate(route = Screen.Home.route)
-                }*/
+                    clientList.forEach { client ->
+                        println("email: >${client.email_client}< / >${email.value}<")
+                        println("password: >${client.password_client}< / >${password.value}<")
+                        println(client.email_client == email.value)
+                        println(client.password_client == password.value)
+                        if (client.email_client == email.value && client.password_client == password.value){
+                            navController.navigate(route = Screen.Home.route)
+                            return@Button
+                        }
+                    }
             }, modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Iniciar Sesión")
@@ -58,6 +65,18 @@ fun LoginScreen(
             TextButton(onClick = { viewModel.navigateTo(Screen.Register) }) {
                 Text(text = "¿No tienes cuenta? Crear una")
             }
+        }
+
+
+
+    }
+    LazyColumn {
+        items(clientList) { client ->
+            Text(text = "id: ${client.id_client}")
+            Text(text = "name: ${client.name_client}")
+            Text(text = "email: ${client.email_client}")
+            Text(text = "password: ${client.password_client}")
+            Text(text = "direction: ${client.direction_client}")
         }
     }
 }

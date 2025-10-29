@@ -13,6 +13,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.actividad_22.data.local.ClientDataBase
+import com.actividad_22.data.repository.ClientRepository
 import com.actividad_22.navigation.NavigationEvent
 import com.actividad_22.navigation.Screen
 import com.actividad_22.ui.theme.Actividad_22Theme
@@ -46,6 +48,10 @@ class MainActivity : ComponentActivity() {
             Actividad_22Theme {
                 val viewModel: MainViewModel = viewModel()
                 val navController = rememberNavController()
+
+                val database = ClientDataBase.getDataBase(this)
+                val userRepository = ClientRepository(database.clientDao())
+                val userFactory = UserViewModel.ClientViewModelFactory(userRepository)
 
                 LaunchedEffect(key1 = Unit) {
                     viewModel.navigationEvents.collectLatest { event ->
@@ -92,7 +98,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(route = Screen.Profile.route) {
-                            val userViewModel: UserViewModel = viewModel()
+                            val userViewModel: UserViewModel = viewModel(factory = userFactory)
                             ProfileScreen(
                                 navController = navController,
                                 viewModel = viewModel,
@@ -122,12 +128,12 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(route = Screen.Register.route) {
-                            val userViewModel: UserViewModel = viewModel()
+                            val userViewModel: UserViewModel = viewModel(factory = userFactory)
                             RegisterScreen(navController = navController, userViewModel = userViewModel)
                         }
 
                         composable(route = Screen.Login.route) {
-                            val userViewModel: UserViewModel = viewModel()
+                            val userViewModel: UserViewModel = viewModel(factory = userFactory)
                             LoginScreen(
                                 navController = navController,
                                 viewModel = viewModel,

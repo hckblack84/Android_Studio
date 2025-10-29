@@ -12,6 +12,10 @@ class ClientRepository(private val clientDAO: ClientDAO){
         clientDAO.insertClient(client)
     }
 
+    fun getClient(email: String, password: String): List<Client> {
+        return clientDAO.findClient(email = email, password = password)
+    }
+
     suspend fun deleteClient(client: Client){
         clientDAO.deleteClient(client)
     }

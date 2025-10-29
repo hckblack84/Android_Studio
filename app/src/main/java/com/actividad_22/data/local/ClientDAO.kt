@@ -15,7 +15,7 @@ interface ClientDAO {
     fun findAll(): Flow<List<Client>>
 
     @Query("SELECT * FROM client WHERE email_client = :email AND password_client = :password")
-    fun findClient(email:String, password:String): Flow<List<Client>>
+    fun findClient(email:String, password:String): List<Client>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertClient(client: Client)

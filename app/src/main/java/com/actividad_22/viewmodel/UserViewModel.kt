@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 
 class UserViewModel(private val clientRepository: ClientRepository) : ViewModel() {
 
-    val allClients: Flow<List<Client>> = clientRepository.allClients
+    val allClients = clientRepository.allClients;
 
     fun insertClient(client: Client) = viewModelScope.launch{
         clientRepository.insertClient(client)
@@ -30,6 +30,10 @@ class UserViewModel(private val clientRepository: ClientRepository) : ViewModel(
 
     fun deleteClient(client: Client) = viewModelScope.launch{
         clientRepository.deleteClient(client)
+    }
+
+    fun getClient(email:String, password:String): List<Client>{
+        return clientRepository.getClient(email, password)
     }
 
     class ClientViewModelFactory(private val clientRepository: ClientRepository) : ViewModelProvider.Factory{

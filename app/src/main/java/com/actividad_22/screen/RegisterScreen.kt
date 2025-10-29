@@ -37,7 +37,7 @@ fun RegisterScreen(
     userViewModel: UserViewModel = viewModel(),
 ){
     val estado by userViewModel.estado.collectAsState()
-    val clientList by userViewModel.allClients.collectAsState(initial = emptyList())
+    //val clientList by userViewModel.allClients.collectAsState(initial = emptyList())
 
 
     Surface (modifier = Modifier.fillMaxSize()){
@@ -141,7 +141,7 @@ fun RegisterScreen(
             Text("Registrar")
         }
 
-        LazyColumn {
+        /*LazyColumn {
             items(clientList) { client ->
                 Text(text = "id: ${client.id_client}")
                 Text(text = "name: ${client.name_client}")
@@ -149,7 +149,7 @@ fun RegisterScreen(
                 Text(text = "password: ${client.password_client}")
                 Text(text = "direction: ${client.direction_client}")
             }
-        }
+        }*/
 
         }
     }

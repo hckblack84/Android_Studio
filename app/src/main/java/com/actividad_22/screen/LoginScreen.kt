@@ -29,6 +29,7 @@ fun LoginScreen(
 
     val email = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
+
     val clientList by userViewModel.allClients.collectAsState(initial = emptyList())
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -45,7 +46,7 @@ fun LoginScreen(
 
             Button(
                 onClick = {
-                    clientList.forEach { client ->
+                    /*clientList.forEach { client ->
                         println("email: >${client.email_client}< / >${email.value}<")
                         println("password: >${client.password_client}< / >${password.value}<")
                         println(client.email_client == email.value)
@@ -54,7 +55,16 @@ fun LoginScreen(
                             navController.navigate(route = Screen.Home.route)
                             return@Button
                         }
+                    }*/
+
+                    val userExist = userViewModel.getClient(email.value, password.value)
+                    if (!userExist.isEmpty()){
+                        navController.navigate(route = Screen.Home.route)
+                    }else{
+                        println("hola mundo")
                     }
+
+
             }, modifier = Modifier.fillMaxWidth()
             ) {
                 Text(text = "Iniciar Sesión")

@@ -33,7 +33,7 @@ class MainViewModel : ViewModel(){
 
             // 2. Una versión PÚBLICA e INMUTABLE del mismo flujo.
             // La UI (tus Composables) observará este `SharedFlow` para reaccionar a los eventos.
-            // Al ser inmutable (no tiene el método `emit`), la UI no puede desencadenar eventos por sí misma,
+            // Al ser inmutable (no tiene el méthod `emit`), la UI no puede desencadenar eventos por sí misma,
             // garantizando que toda la lógica de navegación se origina en el ViewModel.
             val navigationEvents: SharedFlow<NavigationEvent> = _navigationEvents.asSharedFlow()
 

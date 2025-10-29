@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import androidx.room.util.copy
@@ -11,6 +12,7 @@ import com.actividad_22.data.local.Client
 import com.actividad_22.data.repository.ClientRepository
 import com.actividad_22.navigation.UserUiState
 import com.actividad_22.navigation.UsuarioError
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,34 +20,29 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class UserViewModel(private val repository: ClientRepository) : ViewModel() {
+class UserViewModel(private val clientRepository: ClientRepository) : ViewModel() {
 
-    //////////////////////////////////////////////////DATABASE COMPONENTS//////////////////////////////////////////////////
-    val clients = repository.clients.stateIn(
-        viewModelScope,
-        SharingStarted.Companion.WhileSubscribed(),
-        emptyList()
-    )
+    val allClients: Flow<List<Client>> = clientRepository.allClients
 
-    fun addUser(name: String, email:String, password: String, direction:String) {
-        viewModelScope.launch {
-            repository.insert(Client(name_client = name, email_client = email, password_client = password, direction_client = direction))
+    fun insertClient(client: Client) = viewModelScope.launch{
+        clientRepository.insertClient(client)
+    }
+
+    fun deleteClient(client: Client) = viewModelScope.launch{
+        clientRepository.deleteClient(client)
+    }
+
+    class ClientViewModelFactory(private val clientRepository: ClientRepository) : ViewModelProvider.Factory{
+
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(UserViewModel::class.java)){
+                @Suppress("UNCHECKED_CAST")
+                return UserViewModel(clientRepository) as T
+            }
+            throw IllegalArgumentException("Ni modo flaco no esta la vista del modelo")
         }
     }
 
-    fun deleteUser(client: Client) {
-        viewModelScope.launch {
-            repository.delete(client)
-        }
-    }
-
-    /*fun updateUser(client: Client, newName: String, newEmail: String, newPassword:String, newDirection:String) {
-        viewModelScope.launch {
-            repository.update(client.)
-        }
-    }*/
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private val _estado = MutableStateFlow(UserUiState())
 val estado : StateFlow<UserUiState> =_estado

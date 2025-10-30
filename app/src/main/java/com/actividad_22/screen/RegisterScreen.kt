@@ -119,6 +119,7 @@ fun RegisterScreen(
         Button(
             onClick = {
                 if (userViewModel.validarFormulario()){
+                    println("asdjasdlsadkljasdkljsadlasjdkljsa")
                     userViewModel.insertClient(Client(name_client = estado.nombre,
                                                     email_client = estado.correo,
                                                     password_client = estado.clave,

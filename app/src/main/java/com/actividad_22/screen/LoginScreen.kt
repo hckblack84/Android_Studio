@@ -18,6 +18,7 @@ import androidx.navigation.NavController
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.MainViewModel
 import com.actividad_22.viewmodel.UserViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
@@ -26,6 +27,7 @@ fun LoginScreen(
     userViewModel: UserViewModel = viewModel()
 ) {
     // val estado by viewModel.estado.collectAsState()
+    val coroutine = rememberCoroutineScope()
 
     val email = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
@@ -46,6 +48,12 @@ fun LoginScreen(
 
             Button(
                 onClick = {
+                    coroutine.launch {
+                        if (userViewModel.userExist(email.value, password.value)){
+                            navController.navigate(route = Screen.Home.route)
+                        }
+                    }
+
                     /*clientList.forEach { client ->
                         println("email: >${client.email_client}< / >${email.value}<")
                         println("password: >${client.password_client}< / >${password.value}<")
@@ -53,17 +61,8 @@ fun LoginScreen(
                         println(client.password_client == password.value)
                         if (client.email_client == email.value && client.password_client == password.value){
                             navController.navigate(route = Screen.Home.route)
-                            return@Button
                         }
                     }*/
-
-                    val userExist = userViewModel.getClient(email.value, password.value)
-                    if (!userExist.isEmpty()){
-                        navController.navigate(route = Screen.Home.route)
-                    }else{
-                        println("hola mundo")
-                    }
-
 
             }, modifier = Modifier.fillMaxWidth()
             ) {

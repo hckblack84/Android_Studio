@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -30,10 +31,6 @@ class UserViewModel(private val clientRepository: ClientRepository) : ViewModel(
 
     fun deleteClient(client: Client) = viewModelScope.launch{
         clientRepository.deleteClient(client)
-    }
-
-    fun getClient(email:String, password:String): List<Client>{
-        return clientRepository.getClient(email, password)
     }
 
     class ClientViewModelFactory(private val clientRepository: ClientRepository) : ViewModelProvider.Factory{
@@ -91,5 +88,13 @@ fun onAceptaTerminosChange(valor: Boolean){
         return !cantErrores
     }
 
-
+    suspend fun userExist(email: String, password: String): Boolean {
+        val clients = allClients.first()
+        return clients.any { client ->
+            client.email_client == email && client.password_client == password
+        }
     }
+
+
+
+}

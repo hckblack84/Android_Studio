@@ -21,7 +21,6 @@ import com.actividad_22.data.repository.ProductRepository
 import com.actividad_22.navigation.NavigationEvent
 import com.actividad_22.navigation.Screen
 import com.actividad_22.ui.theme.Actividad_22Theme
-import com.actividad_22.screen.CategoryDetailScreen
 import com.actividad_22.screen.EventScreen
 import com.actividad_22.screen.HomeScreen
 import com.actividad_22.screen.LoginScreen
@@ -31,6 +30,7 @@ import com.actividad_22.screen.RegisterScreen
 import com.actividad_22.screen.SettingsScreen
 import com.actividad_22.screen.StartScreen
 import com.actividad_22.screen.StoreScreen
+import com.actividad_22.screen.SummaryScreen
 import com.actividad_22.screen.UsScreen
 import com.actividad_22.viewmodel.ProductViewModel
 import com.actividad_22.viewmodel.UserViewModel
@@ -62,6 +62,8 @@ class MainActivity : ComponentActivity() {
                     }
                 )
 
+
+
                 LaunchedEffect(key1 = Unit) {
                     viewModel.navigationEvents.collectLatest { event ->
                         when (event) {
@@ -91,7 +93,6 @@ class MainActivity : ComponentActivity() {
                         startDestination = Screen.Start.route,
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        // Ruta inicial
                         composable(route = Screen.Start.route) {
                             StartScreen(navController = navController, viewModel = viewModel)
                         }
@@ -113,23 +114,13 @@ class MainActivity : ComponentActivity() {
                             SettingsScreen(navController = navController, viewModel = viewModel)
                         }
 
-                        // Ruta de la tienda con ProductViewModel
                         composable(route = Screen.Store.route) {
-                            StoreScreen(
-                                navController = navController,
-                                viewModel = viewModel,
-                                productViewModel = productViewModel
-                            )
+                            StoreScreen(navController = navController, viewModel = viewModel)
                         }
 
-                        // Nueva ruta para detalle de categoría
                         composable(route = "category/{categoryId}") { backStackEntry ->
                             val categoryId = backStackEntry.arguments?.getString("categoryId")
-                            CategoryDetailScreen(
-                                navController = navController,
-                                categoryId = categoryId,
-                                productViewModel = productViewModel
-                            )
+
                         }
 
                         composable(route = Screen.Us.route) {
@@ -142,7 +133,10 @@ class MainActivity : ComponentActivity() {
 
                         composable(route = Screen.Register.route) {
                             val userViewModel: UserViewModel = viewModel(factory = userFactory)
-                            RegisterScreen(navController = navController, userViewModel = userViewModel)
+                            RegisterScreen(
+                                navController = navController,
+                                userViewModel = userViewModel
+                            )
                         }
 
                         composable(route = Screen.Login.route) {
@@ -153,9 +147,17 @@ class MainActivity : ComponentActivity() {
                                 userViewModel = userViewModel
                             )
                         }
+                        composable(Screen.Summary.route) {
+                            val userViewModel: UserViewModel = viewModel(factory = userFactory)
+                            SummaryScreen(
+                                navController = navController,
+                                userViewModel = userViewModel
+                            )
+                        }
                     }
                 }
             }
         }
     }
 }
+

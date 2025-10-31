@@ -43,6 +43,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.actividad_22.R
 import com.actividad_22.navigation.Screen
+import com.actividad_22.ui.theme.Pink40
 import com.actividad_22.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -107,6 +108,13 @@ fun HomeScreen(
                             scope.launch { drawerState.close() }
                             viewModel.navigateBack()
                         }
+                    )
+                    NavigationDrawerItem(
+                        label = {Text("Base de datos", color = Pink40)},
+                        selected = false,
+                        onClick = {scope.launch { drawerState.close() }
+                        viewModel.navigateTo(Screen.Summary)}
+
                     )
 
                     Column(

@@ -13,6 +13,10 @@ interface ProductDAO {
     @Query("SELECT * FROM product")
     fun findAll(): Flow<List<Product>>
 
+    // wuery para filtrar por categoria
+    @Query("SELECT * FROM product WHERE category_product = :category")
+    suspend fun findByCategory(category: Int): List<Product>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProduct(product: Product)
 
@@ -21,5 +25,4 @@ interface ProductDAO {
 
     @Delete
     suspend fun deleteProduct(product: Product)
-
 }

@@ -37,6 +37,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
@@ -44,7 +45,7 @@ fun ProfileScreen(
     viewModel: MainViewModel = viewModel(),
     userViewModel: UserViewModel = viewModel()
 ) {
-
+val client = userViewModel.allClients.collectAsState(initial = emptyList())
     var selectedItem by remember { mutableStateOf(1) }
     val estado by userViewModel.estado.collectAsState()
     val context = LocalContext.current
@@ -153,12 +154,12 @@ fun ProfileScreen(
 InfoCard(
     icon = Icons.Default.Info,
     label = "Nombre Completo",
-    value = estado.nombre.ifEmpty { "sin informacion" }
+    value = client.value.firstOrNull()?.name_client ?: "Sin informacion"
 )
             InfoCard(
                 icon = Icons.Default.Email,
                 label = "Correo Electrónico",
-                value = estado.correo.ifEmpty { "sin informacion" }
+                value = client.value.firstOrNull()?.email_client ?: "Sin informacion"
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -166,7 +167,7 @@ InfoCard(
             InfoCard(
                 icon = Icons.Default.Lock,
                 label = "Contraseña",
-                value = if (estado.clave.isNotEmpty()) "••••••••" else "Sin informacion"
+                value = client.value.firstOrNull()?.password_client ?: "Sin informacion"
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -174,7 +175,8 @@ InfoCard(
             InfoCard(
                 icon = Icons.Default.LocationOn,
                 label = "Dirección",
-                value = estado.direccion.ifEmpty { "Sin informacion" }
+                value = client.value.firstOrNull()?.direction_client ?: "Sin informacion"
+
             )
 
             Spacer(modifier = Modifier.height(32.dp))

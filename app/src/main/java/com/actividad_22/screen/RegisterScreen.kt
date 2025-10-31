@@ -42,10 +42,11 @@ fun RegisterScreen(
 
     Surface (modifier = Modifier.fillMaxSize()){
         Column(
-            modifier = Modifier.fillMaxSize().padding(16.dp),
+            modifier = Modifier.fillMaxSize().padding(30.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Text(text = "Registro de usuario")
+            Spacer(modifier = Modifier.width(16.dp))
         }
     }
     Column(
@@ -119,7 +120,7 @@ fun RegisterScreen(
         Button(
             onClick = {
                 if (userViewModel.validarFormulario()){
-                    println("asdjasdlsadkljasdkljsadlasjdkljsa")
+                    println("user Registrado")
                     userViewModel.insertClient(Client(name_client = estado.nombre,
                                                     email_client = estado.correo,
                                                     password_client = estado.clave,
@@ -134,7 +135,7 @@ fun RegisterScreen(
                         println("===============================")
                     }*/
 
-                    //navController.navigate(Screen.Login.route)
+                    navController.navigate(Screen.Login.route)
                 }
             },
             modifier = Modifier.fillMaxWidth()

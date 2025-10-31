@@ -50,7 +50,7 @@ dependencies {
     ksp("androidx.room:room-compiler:2.8.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.4")
-
+    implementation("androidx.cardview:cardview:1.0.0")
     implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.activity:activity-ktx:1.8.0")

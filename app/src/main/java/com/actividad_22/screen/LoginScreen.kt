@@ -1,14 +1,13 @@
 package com.actividad_22.screen
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -18,6 +17,7 @@ import androidx.navigation.NavController
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.MainViewModel
 import com.actividad_22.viewmodel.UserViewModel
+import android.widget.Toast
 import kotlinx.coroutines.launch
 
 @Composable
@@ -28,6 +28,7 @@ fun LoginScreen(
 ) {
     // val estado by viewModel.estado.collectAsState()
     val coroutine = rememberCoroutineScope()
+    val context = LocalContext.current
 
     val email = rememberSaveable { mutableStateOf("") }
     val password = rememberSaveable { mutableStateOf("") }
@@ -51,6 +52,8 @@ fun LoginScreen(
                     coroutine.launch {
                         if (userViewModel.userExist(email.value, password.value)){
                             navController.navigate(route = Screen.Home.route)
+                        }else{
+                            Toast.makeText(context, "Cuenta no encontrada", Toast.LENGTH_SHORT).show()
                         }
                     }
 
@@ -79,6 +82,7 @@ fun LoginScreen(
 
 
     }
+    /*
     LazyColumn {
         items(clientList) { client ->
             Text(text = "id: ${client.id_client}")
@@ -87,7 +91,7 @@ fun LoginScreen(
             Text(text = "password: ${client.password_client}")
             Text(text = "direction: ${client.direction_client}")
         }
-    }
+    }*/
 }
 
 @Composable

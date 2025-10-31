@@ -11,13 +11,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.actividad_22.data.local.ClientDataBase
+import com.actividad_22.data.local.ProductDataBase
 import com.actividad_22.data.repository.ClientRepository
+import com.actividad_22.data.repository.ProductRepository
 import com.actividad_22.navigation.NavigationEvent
 import com.actividad_22.navigation.Screen
 import com.actividad_22.ui.theme.Actividad_22Theme
+import com.actividad_22.screen.CategoryDetailScreen
 import com.actividad_22.screen.EventScreen
 import com.actividad_22.screen.HomeScreen
 import com.actividad_22.screen.LoginScreen
@@ -28,18 +32,10 @@ import com.actividad_22.screen.SettingsScreen
 import com.actividad_22.screen.StartScreen
 import com.actividad_22.screen.StoreScreen
 import com.actividad_22.screen.UsScreen
+import com.actividad_22.viewmodel.ProductViewModel
 import com.actividad_22.viewmodel.UserViewModel
 import kotlinx.coroutines.flow.collectLatest
 
-
-
-
-//Recordar actualizar el ide en la parte superior derecha
-/*
-* Donde esta en engranaje
-* para evitar que salga el error
-* de que a version esta desactualizada
-* */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +45,22 @@ class MainActivity : ComponentActivity() {
                 val viewModel: MainViewModel = viewModel()
                 val navController = rememberNavController()
 
-                val database = ClientDataBase.getDataBase(this)
-                val userRepository = ClientRepository(database.clientDao())
+                // Inicializar base de datos de clientes
+                val clientDatabase = ClientDataBase.getDataBase(this)
+                val userRepository = ClientRepository(clientDatabase.clientDao())
                 val userFactory = UserViewModel.ClientViewModelFactory(userRepository)
+
+                // Inicializar base de datos de productos
+                val productDatabase = ProductDataBase.getDataBase(this)
+                val productRepository = ProductRepository(productDatabase.productDao())
+                val productViewModel: ProductViewModel = viewModel(
+                    factory = object : ViewModelProvider.Factory {
+                        override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
+                            @Suppress("UNCHECKED_CAST")
+                            return ProductViewModel(productRepository) as T
+                        }
+                    }
+                )
 
                 LaunchedEffect(key1 = Unit) {
                     viewModel.navigationEvents.collectLatest { event ->
@@ -79,16 +88,10 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = Screen.Start.route,  // al iniciar la pagina comenzara directamente en la pagina de start screen
+                        startDestination = Screen.Start.route,
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        // Rutas
-                        /*
-                        * Cada composable almacena una ruta por difeccto que se encuentra
-                        * entre los parentesis , para poder agregar una ruta se  debe agregar la direccion en
-                        * el apartado de *Screen* en la carpeta de navigation
-                        * la primera de todas
-                        * */
+                        // Ruta inicial
                         composable(route = Screen.Start.route) {
                             StartScreen(navController = navController, viewModel = viewModel)
                         }
@@ -103,20 +106,30 @@ class MainActivity : ComponentActivity() {
                                 navController = navController,
                                 viewModel = viewModel,
                                 userViewModel = userViewModel
-                            )/*
-
-                             cada perdil que maneje una vista de usuario se le debe
-                             incorportar el userViewModel para evitar que la informacion
-                             que se encuentre dentro de esta sea manejada de la forma correcta
-                            */
+                            )
                         }
 
                         composable(route = Screen.Settings.route) {
                             SettingsScreen(navController = navController, viewModel = viewModel)
                         }
 
+                        // Ruta de la tienda con ProductViewModel
                         composable(route = Screen.Store.route) {
-                            StoreScreen(navController = navController, viewModel = viewModel)
+                            StoreScreen(
+                                navController = navController,
+                                viewModel = viewModel,
+                                productViewModel = productViewModel
+                            )
+                        }
+
+                        // Nueva ruta para detalle de categoría
+                        composable(route = "category/{categoryId}") { backStackEntry ->
+                            val categoryId = backStackEntry.arguments?.getString("categoryId")
+                            CategoryDetailScreen(
+                                navController = navController,
+                                categoryId = categoryId,
+                                productViewModel = productViewModel
+                            )
                         }
 
                         composable(route = Screen.Us.route) {

@@ -17,9 +17,13 @@ sealed class Screen(val route : String){
 
     data object Register : Screen(route = "Register_page")
 
+
+    data object Summary : Screen(route = "Summary_page")
+}
+
+
     data class Details(val itemId: String): Screen(route = "detail_page/{itemId}"){
         fun builRoute(): String{
             return route.replace(oldValue = "{itemId}", newValue = itemId)
         }
     }
-}

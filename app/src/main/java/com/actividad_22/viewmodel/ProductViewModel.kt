@@ -8,7 +8,6 @@ import com.actividad_22.data.repository.ProductRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-
 class ProductViewModel(private val repository: ProductRepository) : ViewModel() {
 
     private val _products = MutableStateFlow<List<Product>>(emptyList())
@@ -31,7 +30,7 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
 
     fun loadProductsByCategory(category: Int) {
         viewModelScope.launch {
-            val products = repository.productDAO.findByCategory(category)
+            val products = repository.getProductsByCategory(category)
             _categoryProducts.value = products
         }
     }
@@ -74,8 +73,7 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
         return when(category) {
             1 -> "Accesorios"
             2 -> "Juegos"
-            3-> "Perifericos"
-
+            3 -> "Periféricos"
             else -> "Categoría $category"
         }
     }
@@ -85,7 +83,6 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
             1 -> R.drawable.img_accesorio
             2 -> R.drawable.img_juego
             3 -> R.drawable.img_perifericos
-
             else -> R.drawable.ic_launcher_foreground
         }
     }

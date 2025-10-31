@@ -24,8 +24,6 @@ fun AppNavigation(){
                 userViewModel = userViewModel  // ✅ CORREGIDO - Usa el nombre del parámetro
             )
         }
-        composable(route = "Summary"){
-            SummaryScreen(viewModel = userViewModel)  // ✅ También usa nombre aquí
-        }
+
     }
 }

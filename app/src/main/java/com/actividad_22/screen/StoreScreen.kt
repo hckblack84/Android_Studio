@@ -29,15 +29,30 @@ import com.actividad_22.R
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.MainViewModel
 
+/**
+ * Clase de datos que representa un producto en la tienda.
+ *
+ * @property imageRes El ID del recurso de la imagen del producto.
+ * @property name El nombre del producto.
+ * @property price El precio del producto.
+ */
 data class Product(
     val imageRes: Int,
     val name: String,
     val price: Double
 )
 
+/**
+ * Composable que define la pantalla principal de la tienda.
+ * Muestra una lista de productos en una cuadrícula y una barra de navegación inferior.
+ *
+ * @param navController El controlador de navegación para manejar los desplazamientos entre pantallas.
+ * @param viewModel El ViewModel principal que contiene la lógica de negocio y el estado de la UI.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StoreScreen(navController: NavHostController, viewModel: MainViewModel) {
+    // Lista de productos que se mostrarán en la tienda.
     val productList = listOf(
         Product(R.drawable.mouse_pad, "Mouse Pad RGB", 15.99),
         Product(R.drawable.teclado_gamer, "Teclado Mecánico", 89.99),
@@ -50,9 +65,11 @@ fun StoreScreen(navController: NavHostController, viewModel: MainViewModel) {
         Product(R.drawable.lampara_led, "Lámpara LED", 29.99),
     )
 
+    // Estructura principal de la pantalla usando Scaffold.
     Scaffold(
         topBar = {
             TopAppBar(
+                // Título de la barra superior.
                 title = { Text("🛒 Tienda de Accesorios") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.errorContainer,
@@ -62,6 +79,7 @@ fun StoreScreen(navController: NavHostController, viewModel: MainViewModel) {
         },
         bottomBar = {
             BottomAppBar(
+                // Barra de navegación inferior con esquinas superiores redondeadas.
                 modifier = Modifier.clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
                 contentPadding = PaddingValues(horizontal = 16.dp)
@@ -75,14 +93,17 @@ fun StoreScreen(navController: NavHostController, viewModel: MainViewModel) {
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
+                        // Botón para navegar a la pantalla de inicio.
                         IconButton(onClick = { viewModel.navigateTo(Screen.Home) }) {
                             Icon(Icons.Filled.Home, contentDescription = "Inicio")
                         }
                         Spacer(modifier = Modifier.weight(1f))
+                        // Botón para navegar a la pantalla de perfil.
                         IconButton(onClick = { viewModel.navigateTo(Screen.Profile) }) {
                             Icon(Icons.Filled.Person, contentDescription = "Perfil")
                         }
                     }
+                    // Botón de acción flotante (FAB) para el carrito de compras.
                     FloatingActionButton(
                         onClick = { },
                         modifier = Modifier.offset(y = (-16).dp),
@@ -99,6 +120,8 @@ fun StoreScreen(navController: NavHostController, viewModel: MainViewModel) {
             }
         },
     ) { paddingValues ->
+        // Cuadrícula vertical perezosa para mostrar la lista de productos.
+        // `LazyVerticalGrid` es eficiente para listas largas, ya que solo compone los elementos visibles.
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier
@@ -108,6 +131,7 @@ fun StoreScreen(navController: NavHostController, viewModel: MainViewModel) {
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            // Itera sobre la lista de productos y crea un `ProductCardSimple` para cada uno.
             items(productList) { product ->
                 ProductCardSimple(
                     imageRes = product.imageRes,
@@ -121,6 +145,15 @@ fun StoreScreen(navController: NavHostController, viewModel: MainViewModel) {
     }
 }
 
+/**
+ * Composable que representa la tarjeta de un producto individual.
+ *
+ * @param imageRes El ID del recurso de la imagen del producto.
+ * @param productName El nombre del producto.
+ * @param price El precio del producto.
+ * @param onAddClick La acción a ejecutar cuando se hace clic en el botón "Agregar".
+ * @param modifier El modificador para personalizar el estilo y el diseño de la tarjeta.
+ */
 @Composable
 fun ProductCardSimple(
     imageRes: Int,
@@ -129,6 +162,7 @@ fun ProductCardSimple(
     onAddClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Contenedor principal de la tarjeta con elevación y esquinas redondeadas.
     Card(
         modifier = modifier.heightIn(min = 280.dp),
         shape = RoundedCornerShape(12.dp),
@@ -136,11 +170,13 @@ fun ProductCardSimple(
         colors = CardDefaults.cardColors(containerColor = Color.White)
     ) {
         Column(
+            // Columna para organizar los elementos verticalmente.
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // Imagen del producto.
             Image(
                 painter = painterResource(id = imageRes),
                 contentDescription = productName,
@@ -153,6 +189,7 @@ fun ProductCardSimple(
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            // Nombre del producto.
             Text(
                 text = productName,
                 fontSize = 14.sp,
@@ -165,6 +202,7 @@ fun ProductCardSimple(
 
             Spacer(modifier = Modifier.height(4.dp))
 
+            // Precio del producto, formateado a dos decimales.
             Text(
                 text = "$${String.format("%.2f", price)}",
                 fontSize = 16.sp,
@@ -174,6 +212,7 @@ fun ProductCardSimple(
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            // Botón para agregar el producto al carrito.
             Button(
                 onClick = onAddClick,
                 modifier = Modifier
@@ -184,6 +223,7 @@ fun ProductCardSimple(
                 ),
                 contentPadding = PaddingValues(horizontal = 8.dp)
             ) {
+                // Ícono de "Agregar".
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = null,
@@ -191,6 +231,7 @@ fun ProductCardSimple(
                     modifier = Modifier.size(20.dp)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
+                // Texto del botón.
                 Text(
                     text = "Agregar",
                     color = Color.White,

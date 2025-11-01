@@ -34,16 +34,28 @@ import androidx.navigation.NavController
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.UserViewModel
 
+/**
+ * Pantalla que muestra un resumen de todos los clientes registrados.
+ *
+ * Esta pantalla muestra una lista de todos los clientes de la base de datos.
+ * También proporciona una barra inferior con opciones para limpiar la base de datos (funcionalidad futura)
+ * y para navegar de vuelta a la pantalla de inicio.
+ *
+ * @param navController El controlador de navegación para manejar las transiciones entre pantallas.
+ * @param userViewModel El ViewModel que proporciona los datos de los clientes.
+ */
 @Composable
 fun SummaryScreen(
     navController: NavController,
     userViewModel: UserViewModel
 ) {
+    // Recolecta la lista de todos los clientes del ViewModel como un estado.
     val clientList by userViewModel.allClients.collectAsState(initial = emptyList())
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
+            // Barra de aplicación inferior con acciones.
             BottomAppBar(
                 modifier = Modifier.clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
                 containerColor = MaterialTheme.colorScheme.errorContainer
@@ -53,15 +65,18 @@ fun SummaryScreen(
                     horizontalArrangement = Arrangement.SpaceAround,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    // Botón para limpiar la base de datos.
+                    // TODO: En el futuro se hará la lógica para limpiar la base de datos.
                     Button(onClick = {
                         Log.d("SummaryScreen", "Base de datos limpiada")
                     }) {
                         Text("Limpiar DB")
                     }
+                    // Botón de ícono para navegar a la pantalla de inicio.
                     IconButton(onClick = { navController.navigate(Screen.Home.route) }) {
                         Icon(
                             imageVector = Icons.Default.Home,
-                            contentDescription = "Volver al inicio"
+                            contentDescription = "Volver al Inicio"
                         )
                     }
 
@@ -69,20 +84,25 @@ fun SummaryScreen(
             }
         }
     ) { innerPadding ->
+        // Contenido principal de la pantalla.
         Column(
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Resumen de Usuario", style = MaterialTheme.typography.headlineSmall)
+            Text("Resumen de Clientes", style = MaterialTheme.typography.headlineSmall)
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Comprueba si la lista de clientes no está vacía.
             if (clientList.isNotEmpty()) {
+                // Muestra la lista de clientes en una LazyColumn.
                 LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(clientList) { client ->
+                        // Tarjeta para cada cliente.
                         Card(modifier = Modifier.fillMaxWidth(), elevation = CardDefaults.cardElevation(4.dp)) {
                             Column(modifier = Modifier.padding(16.dp)) {
+                                // Muestra los detalles del cliente.
                                 Text(text = "ID: ${client.id_client}", style = MaterialTheme.typography.bodyLarge)
                                 Text(text = "Nombre: ${client.name_client}")
                                 Text(text = "Email: ${client.email_client}")
@@ -92,7 +112,8 @@ fun SummaryScreen(
                     }
                 }
             } else {
-                Text("No hay usuarios en la base de datos")
+                // Muestra un mensaje si no hay clientes.
+                Text("No hay clientes en la base de datos")
             }
         }
     }

@@ -49,17 +49,31 @@ import com.actividad_22.ui.theme.Pink40
 import com.actividad_22.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
+/**
+ * Composable que representa la pantalla principal de la aplicación.
+ *
+ * Esta pantalla muestra un saludo de bienvenida, botones de navegación a diferentes secciones
+ * como "Nosotros", "Tienda" y "Eventos". Incluye una barra de aplicaciones superior (TopAppBar)
+ * con un menú de navegación lateral (Navigation Drawer) y un botón para cerrar sesión.
+ *
+ * @param navController El controlador de navegación para manejar los desplazamientos entre pantallas.
+ * @param viewModel El ViewModel principal que gestiona la lógica de negocio y el estado de la interfaz de usuario.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
     viewModel: MainViewModel = viewModel()
 ) {
+    // Estado para controlar la apertura y cierre del menú de navegación lateral.
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    // Ámbito de corutina para lanzar operaciones asíncronas como abrir/cerrar el drawer.
     val scope = rememberCoroutineScope()
 
+    // Contenedor principal que integra el menú de navegación lateral.
     ModalNavigationDrawer(
         drawerState = drawerState,
+        // Contenido del menú lateral.
         drawerContent = {
             ModalDrawerSheet(
                 drawerContainerColor = Color(0xAA000000)
@@ -72,6 +86,7 @@ fun HomeScreen(
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF0C49D5)
                     )
+                    // Elemento de navegación para ir a la pantalla de Perfil.
                     NavigationDrawerItem(
                         label = {
                             Text(
@@ -87,6 +102,7 @@ fun HomeScreen(
                         }
 
                     )
+                    // Elemento de navegación para ir a la pantalla de Tienda.
                     NavigationDrawerItem(
                         label = { Text(text = "Tienda", color = Color.White) },
                         selected = false,
@@ -95,6 +111,7 @@ fun HomeScreen(
                             viewModel.navigateTo(Screen.Store)
                         }
                     )
+                    // Elemento de navegación para ir a la pantalla de Nosotros.
                     NavigationDrawerItem(
                         label = { Text(text = "Nosotros", color = Color.White) },
                         selected = false,
@@ -103,6 +120,7 @@ fun HomeScreen(
                             viewModel.navigateTo(Screen.Us)
                         }
                     )
+                    // Elemento de navegación para ir a la pantalla de Eventos.
                     NavigationDrawerItem(
                         label = { Text(text = "Eventos", color = Color.White) },
                         selected = false,
@@ -111,6 +129,7 @@ fun HomeScreen(
                             viewModel.navigateTo(Screen.Event)
                         }
                     )
+                    // Elemento de navegación para ir a la pantalla de Base de Datos (Resumen).
                     NavigationDrawerItem(
                         label = {Text("Base de datos", color = Pink40)},
                         selected = false,
@@ -119,6 +138,7 @@ fun HomeScreen(
 
                     )
 
+                    // Columna para alinear el botón de cerrar el drawer en la parte inferior.
                     Column(
                         modifier = Modifier.fillMaxSize().padding(end = 16.dp, bottom = 16.dp),
                         horizontalAlignment = Alignment.Start,
@@ -146,7 +166,7 @@ fun HomeScreen(
         }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-
+            // Imagen de fondo de la pantalla.
             Image(
                 painter = painterResource(id = R.drawable.fondo1),
                 contentDescription = "Fondo de pantalla",
@@ -154,10 +174,13 @@ fun HomeScreen(
                 contentScale = ContentScale.Crop
             )
 
+            // Estructura básica de la pantalla con una barra de aplicaciones superior.
             Scaffold(
+                // Barra de aplicaciones superior.
                 topBar = {
                     TopAppBar (
                         title = {
+                            // Fila para centrar el título (actualmente vacío).
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.Center,
@@ -174,8 +197,10 @@ fun HomeScreen(
                             navigationIconContentColor = Color.White,
                             titleContentColor = Color.White
                         ),
+                        // Icono para abrir el menú de navegación lateral.
                         navigationIcon = {
                             IconButton(onClick = {
+                                // Abre el drawer al hacer clic.
                                 scope.launch { drawerState.open() }
                             }) {
                                 Icon(
@@ -185,7 +210,9 @@ fun HomeScreen(
                                 )
                             }
                         },
+                        // Acciones en la parte derecha de la barra de aplicaciones.
                         actions = {
+                            // Botón para cerrar sesión y volver a la pantalla de inicio.
                             TextButton(onClick = { viewModel.navigateTo(Screen.Start) }) {
                                 Text(
                                     text = "Cerrar Sesión",
@@ -198,6 +225,7 @@ fun HomeScreen(
                 },
                 containerColor = Color.Transparent
             ) { innerPadding ->
+                // Contenido principal de la pantalla.
                 Column(
                     modifier = Modifier
                         .padding(innerPadding)
@@ -207,6 +235,7 @@ fun HomeScreen(
                 ) {
                     Spacer(modifier = Modifier.height(32.dp))
                         Text(text = "¡Bienvenido a level up gaming!", color = Color.White, fontWeight = FontWeight.Bold)
+                    // Botón para navegar a la pantalla "Nosotros".
                     Spacer(modifier = Modifier.height(32.dp))
                     Button(
                         onClick = { viewModel.navigateTo(Screen.Us) },
@@ -228,6 +257,7 @@ fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
+                    // Botón para navegar a la pantalla "Tienda".
                     Button(
                         onClick = { viewModel.navigateTo(Screen.Store) },
                         shape = CircleShape,
@@ -248,6 +278,7 @@ fun HomeScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
+                    // Botón para navegar a la pantalla "Eventos".
                     Button(
                         onClick = { viewModel.navigateTo(Screen.Event) },
                         shape = CircleShape,

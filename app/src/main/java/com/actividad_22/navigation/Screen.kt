@@ -1,5 +1,12 @@
 package com.actividad_22.navigation
 
+/**
+
+ * representa de diferenctes maneras la navegacion entre pantallas de la aplicacion
+ * el formato de seadle class permite un manejo seguro de este tipo de navegacion
+ *
+ * @property route The unique string identifier for the navigation route.
+ */
 sealed class Screen(val route : String){
     data object Home : Screen(route = "home_page")
     data object Profile : Screen(route = "profile_page")
@@ -20,6 +27,8 @@ sealed class Screen(val route : String){
 
     data object Summary : Screen(route = "Summary_page")
 }
+
+//Permite saber el parametro de la ruta para comenzar con la navegacion de manera segura evitando bucles
 
 
     data class Details(val itemId: String): Screen(route = "detail_page/{itemId}"){

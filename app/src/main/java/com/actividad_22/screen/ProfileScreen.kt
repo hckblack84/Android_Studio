@@ -6,6 +6,7 @@ import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.expandHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -88,14 +89,38 @@ val client = userViewModel.allClients.collectAsState(initial = emptyList())
     }
 
     Scaffold(
+
         topBar = {
+
             TopAppBar(
-                title = { Text(text = "Perfil") },
+                title = {
+                    Text(
+                        text = "Perfil",
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = androidx.compose.ui.text.style.TextAlign.Center
+                    )
+                },
                 actions = {
-                    Button(onClick = { viewModel.navigateTo(Screen.Home) }) {
-                        Text("Volver")
-                    }
+                    Spacer(modifier = Modifier.width(48.dp))
                 })
+        },
+        bottomBar = {
+            BottomAppBar(
+                modifier = Modifier.clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            ) {
+                Spacer(modifier = Modifier.weight(1f)) // Pushes the button to the end
+                IconButton(onClick = { navController.navigate(Screen.Home.route) }) {
+                    Icon(
+                        imageVector = Icons.Filled.Home,
+                        contentDescription = "Ir a Home",
+                        modifier = Modifier.size(28.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                Spacer(modifier = Modifier.width(16.dp))
+            }
         }){ innerPadding ->
         Column(
             modifier = Modifier
@@ -128,13 +153,13 @@ val client = userViewModel.allClients.collectAsState(initial = emptyList())
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = estado.nombre.ifEmpty { "*Nombre*" },
+                text = client.value.firstOrNull()?.name_client ?: "Sin informacion",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             if (estado.aceptaTerminos) {
                 Surface(
@@ -156,6 +181,7 @@ InfoCard(
     label = "Nombre Completo",
     value = client.value.firstOrNull()?.name_client ?: "Sin informacion"
 )
+            Spacer(modifier = Modifier.height(12.dp))
             InfoCard(
                 icon = Icons.Default.Email,
                 label = "Correo Electrónico",
@@ -179,11 +205,9 @@ InfoCard(
 
             )
 
-            Spacer(modifier = Modifier.height(32.dp))
-
-
-
         }
+
+
     }
 
 
@@ -204,10 +228,6 @@ InfoCard(
     }
 }
 
-@Composable
-fun TopAppBtn(title: () -> Unit, icon: () -> Unit, onClick: () -> Unit) {
-    TODO("Not yet implemented")
-}
 
 @Composable
 fun ProfileImageWithCamera(

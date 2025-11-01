@@ -1,8 +1,10 @@
 package com.actividad_22.screen
 
-import android.view.Window
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -22,21 +24,38 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.actividad_22.R
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.MainViewModel
 
+data class Product(
+    val imageRes: Int,
+    val name: String,
+    val price: Double
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StoreScreen(navController: NavHostController, viewModel: MainViewModel) {
+    val productList = listOf(
+        Product(R.drawable.mouse_pad, "Mouse Pad RGB", 15.99),
+        Product(R.drawable.teclado_gamer, "Teclado Mecánico", 89.99),
+        Product(R.drawable.audifonos_gamer, "Audífonos Gamer", 45.99),
+        Product(R.drawable.camara_gamer, "Webcam HD", 59.99),
+        Product(R.drawable.microfono_gamer, "Micrófono USB", 79.99),
+        Product(R.drawable.monitor_gamer, "Monitor 24''", 199.99),
+        Product(R.drawable.silla_gamer, "Silla Gamer", 299.99),
+        Product(R.drawable.luquitas, "Escritorio", 149.99),
+        Product(R.drawable.lampara_led, "Lámpara LED", 29.99),
+    )
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("🛒 Tienda de Accesorios") },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    containerColor = MaterialTheme.colorScheme.errorContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
             )
@@ -56,58 +75,52 @@ fun StoreScreen(navController: NavHostController, viewModel: MainViewModel) {
                         horizontalArrangement = Arrangement.SpaceAround,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        // Botón de Inicio
                         IconButton(onClick = { viewModel.navigateTo(Screen.Home) }) {
                             Icon(Icons.Filled.Home, contentDescription = "Inicio")
                         }
-                        // Espaciador para dejar sitio al FAB
                         Spacer(modifier = Modifier.weight(1f))
-                        // Botón de Perfil
                         IconButton(onClick = { viewModel.navigateTo(Screen.Profile) }) {
                             Icon(Icons.Filled.Person, contentDescription = "Perfil")
                         }
                     }
-                    // Botón flotante para el carrito, más grande y centrado
                     FloatingActionButton(
-                        onClick = {    },
-                        modifier = Modifier.offset(y = (-16).dp), // Lo eleva un poco
+                        onClick = { },
+                        modifier = Modifier.offset(y = (-16).dp),
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary
                     ) {
-                        Icon(Icons.Filled.ShoppingCart, contentDescription = "Ver Carrito", modifier = Modifier.size(32.dp)) // Icono más grande
+                        Icon(
+                            Icons.Filled.ShoppingCart,
+                            contentDescription = "Ver Carrito",
+                            modifier = Modifier.size(32.dp)
+                        )
                     }
                 }
             }
         },
     ) { paddingValues ->
-        // Contenido principal: Dos tarjetas de producto lado a lado
-        Row(
-            Modifier
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = Modifier
                 .padding(paddingValues)
                 .padding(16.dp)
                 .fillMaxSize(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            ProductCardSimple(
-                imageRes = R.drawable.luchito,
-                productName = "Mouse Pad RGB",
-                price = 15.99,
-                onAddClick = { println("Mouse Pad RGB agregado al carrito") },
-                modifier = Modifier.weight(1f)
-            )
-
-            ProductCardSimple(
-                imageRes = R.drawable.luquitas,
-                productName = "Teclado Mecánico",
-                price = 89.99,
-                onAddClick = { println("Teclado Mecánico agregado al carrito") },
-                modifier = Modifier.weight(1f)
-            )
+            items(productList) { product ->
+                ProductCardSimple(
+                    imageRes = product.imageRes,
+                    productName = product.name,
+                    price = product.price,
+                    onAddClick = { println("${product.name} agregado al carrito") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
     }
 }
 
-// --- Composable de la Tarjeta de Producto ---
 @Composable
 fun ProductCardSimple(
     imageRes: Int,
@@ -128,7 +141,6 @@ fun ProductCardSimple(
                 .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Imagen del producto
             Image(
                 painter = painterResource(id = imageRes),
                 contentDescription = productName,
@@ -141,7 +153,6 @@ fun ProductCardSimple(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Nombre del producto
             Text(
                 text = productName,
                 fontSize = 14.sp,
@@ -154,7 +165,6 @@ fun ProductCardSimple(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            // Precio
             Text(
                 text = "$${String.format("%.2f", price)}",
                 fontSize = 16.sp,
@@ -164,8 +174,7 @@ fun ProductCardSimple(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Botón para agregar al carrito
-            Button( // Usamos Button en lugar de IconButton para el texto "Agregar"
+            Button(
                 onClick = onAddClick,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -177,7 +186,7 @@ fun ProductCardSimple(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = null, // Ya está en el texto
+                    contentDescription = null,
                     tint = Color.White,
                     modifier = Modifier.size(20.dp)
                 )

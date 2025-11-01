@@ -1,15 +1,17 @@
 package com.actividad_22.screen
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
@@ -19,6 +21,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
@@ -30,9 +33,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -106,7 +108,7 @@ fun HomeScreen(
                         selected = false,
                         onClick = {
                             scope.launch { drawerState.close() }
-                            viewModel.navigateBack()
+                            viewModel.navigateTo(Screen.Event)
                         }
                     )
                     NavigationDrawerItem(
@@ -144,7 +146,7 @@ fun HomeScreen(
         }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            // Imagen de fondo
+
             Image(
                 painter = painterResource(id = R.drawable.fondo1),
                 contentDescription = "Fondo de pantalla",
@@ -154,19 +156,18 @@ fun HomeScreen(
 
             Scaffold(
                 topBar = {
-                    TopAppBar(
-
+                    TopAppBar (
                         title = {
-                            Text(
-                                text = "合",
-                                color = Color.White,
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.absolutePadding(
-                                    left = 125.dp
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "",
+                                    style = TextStyle(color = Color.White, fontSize = 24.sp, fontWeight = FontWeight.Bold)
                                 )
-
-                            )
+                            }
                         },
                         colors = TopAppBarDefaults.topAppBarColors(
                             containerColor = Color(0xAA000000), // Negro semitransparente
@@ -183,6 +184,15 @@ fun HomeScreen(
                                     tint = Color.White
                                 )
                             }
+                        },
+                        actions = {
+                            TextButton(onClick = { viewModel.navigateTo(Screen.Start) }) {
+                                Text(
+                                    text = "Cerrar Sesión",
+                                    color = Color(0xFFE91E63),
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     )
                 },
@@ -191,49 +201,66 @@ fun HomeScreen(
                 Column(
                     modifier = Modifier
                         .padding(innerPadding)
-                        .fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
-                    Box(
-                        modifier = Modifier
-                            .background(Color(0xAA000000))
-                            .padding(16.dp)
+                    Spacer(modifier = Modifier.height(32.dp))
+                        Text(text = "¡Bienvenido a level up gaming!", color = Color.White, fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(32.dp))
+                    Button(
+                        onClick = { viewModel.navigateTo(Screen.Us) },
+                        shape = CircleShape,
+                        modifier = Modifier.size(120.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
                     ) {
-                        Text(
-                            text = "\uD83C\uDFAE Bienvenido a Level Up Gaming \uD83D\uDD79\uFE0F ",
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold,
-                            style = TextStyle(
-                                shadow = Shadow(
-                                    color = Color.Black,
-                                    offset = Offset(2f, 2f),
-                                    blurRadius = 8f
-                                )
-                            )
+                        Image(
+                            painter = painterResource(id = R.drawable.img_juego),
+                            contentDescription = "Nosotros",
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape),
+                            contentScale = ContentScale.Fit
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(height = 24.dp))
+                    Text("Nosotros", color = Color.White, fontWeight = FontWeight.Bold)
+
+                    Spacer(modifier = Modifier.height(24.dp))
 
                     Button(
-                        onClick = { viewModel.navigateTo(Screen.Start) },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF1976D2), // Azul
-                            contentColor = Color.White
-                        )
+                        onClick = { viewModel.navigateTo(Screen.Store) },
+                        shape = CircleShape,
+                        modifier = Modifier.size(120.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
                     ) {
-                        Text(
-                            text = "Cerrar Sesión",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Medium
+                        Image(
+                            painter = painterResource(id = R.drawable.img_accesorio),
+                            contentDescription = "Tienda",
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .clip(CircleShape),
+                            contentScale = ContentScale.Crop
                         )
                     }
-                    Spacer(modifier = Modifier.height(height = 24.dp))
 
+                    Text("Tienda", color = Color.White, fontWeight = FontWeight.Bold)
 
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Button(
+                        onClick = { viewModel.navigateTo(Screen.Event) },
+                        shape = CircleShape,
+                        modifier = Modifier.size(120.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.img_perifericos),
+                            contentDescription = "Eventos",
+                            modifier = Modifier.fillMaxSize().clip(CircleShape),
+                            contentScale = ContentScale.Crop)
+                    }
+                    Text("Eventos", color = Color.White, fontWeight = FontWeight.Bold)
                 }
             }
         }

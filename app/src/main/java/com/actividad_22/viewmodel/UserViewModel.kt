@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.forEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -37,6 +38,7 @@ class UserViewModel(private val clientRepository: ClientRepository) : ViewModel(
 
     fun truncateClients() = viewModelScope.launch {
         clientRepository.clearClientTable()
+
     }
 
     class ClientViewModelFactory(private val clientRepository: ClientRepository) : ViewModelProvider.Factory{
@@ -76,8 +78,8 @@ fun onAceptaTerminosChange(valor: Boolean){
         val estadoActual = _estado.value
         val errores = UsuarioError(
             nombre = if (estadoActual.nombre.trim().length >= 3 && estadoActual.nombre.trim().length <= 10) null else "Porfavor ingrese un nombre entre 3 y 10 caracteres",
-            correo = if (emailVerified.isValidEmail(estadoActual.correo.trim()) || estadoActual.correo.isBlank()) null else "Correo invalido",
-            clave = if (estadoActual.clave.length >= 4 && estadoActual.nombre.length <= 8) null else "Ingrese una contraseña entre 4 y 8 caracteres",
+            correo = if (emailVerified.isValidEmail(estadoActual.correo.trim()) || !estadoActual.correo.isBlank()) null else "Correo invalido",
+            clave = if (estadoActual.clave.length >= 4 && estadoActual.clave.length <= 8) null else "Ingrese una contraseña entre 4 y 8 caracteres",
             direccion = if (estadoActual.direccion.isBlank()) "Porfavor ingrese una direccion" else null
         )
         val cantErrores= listOfNotNull(

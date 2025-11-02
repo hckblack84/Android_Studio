@@ -12,10 +12,12 @@ class ClientRepository(private val clientDAO: ClientDAO){
         clientDAO.insertClient(client)
     }
 
-
-
     suspend fun deleteClient(client: Client){
         clientDAO.deleteClient(client)
+    }
+
+    suspend fun clearClientTable(){
+        clientDAO.clearClientsTable()
     }
 
 }

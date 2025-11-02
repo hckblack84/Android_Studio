@@ -35,6 +35,10 @@ class UserViewModel(private val clientRepository: ClientRepository) : ViewModel(
         clientRepository.deleteClient(client)
     }
 
+    fun truncateClients() = viewModelScope.launch {
+        clientRepository.clearClientTable()
+    }
+
     class ClientViewModelFactory(private val clientRepository: ClientRepository) : ViewModelProvider.Factory{
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

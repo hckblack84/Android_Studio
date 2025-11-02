@@ -14,7 +14,6 @@ interface ClientDAO {
     @Query("SELECT * FROM client")
     fun findAll(): Flow<List<Client>>
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertClient(client: Client)
 
@@ -23,5 +22,8 @@ interface ClientDAO {
 
     @Delete
     suspend fun deleteClient(client: Client)
+
+    @Query("DELETE FROM client")
+    suspend fun clearClientsTable();
 
 }

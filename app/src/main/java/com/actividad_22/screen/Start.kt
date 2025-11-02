@@ -101,9 +101,23 @@ fun StartScreen(
             ) {
                 Text("tienda P")
             }
-
+            Button(
+                onClick = {viewModel.navigateTo(Screen.Us)},
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Yellow,
+                    contentColor = Color.Black
+                )
+            ) {
+                Text("Habla pe causa de tu madre")
+            }
+            Button(
+                onClick = { viewModel.navigateTo(Screen.Home) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.Cyan,
+                    contentColor = Color.Blue)
+                ) {
+                    Text("home cause")
+                }
         }
-
     }
-
 }

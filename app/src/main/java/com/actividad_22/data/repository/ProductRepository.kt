@@ -24,4 +24,12 @@ class ProductRepository(val productDAO: ProductDAO) {
     suspend fun deleteProduct(productData: ProductData) {
         productDAO.deleteProduct(productData)
     }
+
+    suspend fun truncateProducts(){
+        productDAO.truncateProducts()
+    }
+
+    suspend fun deleteProductById(id:Long) {
+        productDAO.deleteProductById(id)
+    }
 }

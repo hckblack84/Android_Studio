@@ -55,6 +55,18 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
         }
     }
 
+    fun deleteProductById(id:Long){
+        viewModelScope.launch {
+            repository.deleteProductById(id)
+        }
+    }
+
+    fun deleteAllProducts(){
+        viewModelScope.launch {
+            repository.truncateProducts()
+        }
+    }
+
     // Obtener categorías únicas de los productos
     fun getCategories(): List<Categoria> {
         val uniqueCategories = _products.value

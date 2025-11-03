@@ -139,7 +139,7 @@ fun StoreScreen(navController: NavHostController, viewModel: MainViewModel, prod
                     imageRes = product.imageRes,
                     productName = product.name,
                     price = product.price,
-                    onAddClick = {
+                    addToCartEvent = {
                         //Agregar a la base de datos
                         productViewModel.insertProduct(ProductData(
                             name_product = product.name,
@@ -163,7 +163,7 @@ fun StoreScreen(navController: NavHostController, viewModel: MainViewModel, prod
  * @param imageRes El ID del recurso de la imagen del producto.
  * @param productName El nombre del producto.
  * @param price El precio del producto.
- * @param onAddClick La acción a ejecutar cuando se hace clic en el botón "Agregar".
+ * @param addToCartEvent La acción a ejecutar cuando se hace clic en el botón "Agregar".
  * @param modifier El modificador para personalizar el estilo y el diseño de la tarjeta.
  */
 @Composable
@@ -171,7 +171,7 @@ fun ProductCardSimple(
     imageRes: Int,
     productName: String,
     price: Double,
-    onAddClick: () -> Unit,
+    addToCartEvent: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     // Contenedor principal de la tarjeta con elevación y esquinas redondeadas.
@@ -226,7 +226,7 @@ fun ProductCardSimple(
 
             // Botón para agregar el producto al carrito.
             Button(
-                onClick = onAddClick,
+                onClick = addToCartEvent,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(40.dp),

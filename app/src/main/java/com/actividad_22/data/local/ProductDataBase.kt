@@ -21,7 +21,7 @@ companion object {
                 context.applicationContext,
                 ProductDataBase::class.java,
                 "product_database"
-            ).fallbackToDestructiveMigration().build()
+            ).build()
             INTANCE = instance
             instance
 

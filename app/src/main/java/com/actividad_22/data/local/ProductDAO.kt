@@ -17,6 +17,12 @@ interface ProductDAO {
     @Query("SELECT * FROM Product WHERE category_product = :category")
     suspend fun findByCategory(category: Int): List<ProductData>
 
+    @Query("DELETE FROM Product WHERE id_product = :id")
+    suspend fun deleteProductById(id:Long)
+
+    @Query("DELETE FROM Product")
+    suspend fun truncateProducts()
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProduct(productData: ProductData)
 

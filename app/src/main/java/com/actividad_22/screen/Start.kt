@@ -93,13 +93,13 @@ fun StartScreen(
                 Text("Registrarse")
             }
             Button(
-                onClick = { viewModel.navigateTo(Screen.Store) },
+                onClick = { viewModel.navigateTo(Screen.Event) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF1976D2),
                     contentColor = Color.White
                 )
             ) {
-                Text("tienda P")
+                Text("Eventos ")
             }
             Button(
                 onClick = {viewModel.navigateTo(Screen.Us)},

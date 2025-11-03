@@ -3,18 +3,20 @@ package com.actividad_22.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.actividad_22.R
-import com.actividad_22.data.local.Product
+import com.actividad_22.data.local.ProductData
 import com.actividad_22.data.repository.ProductRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 class ProductViewModel(private val repository: ProductRepository) : ViewModel() {
 
-    private val _products = MutableStateFlow<List<Product>>(emptyList())
-    val products: StateFlow<List<Product>> = _products
+    private val _products = MutableStateFlow<List<ProductData>>(emptyList())
+    val products: StateFlow<List<ProductData>> = _products
 
-    private val _categoryProducts = MutableStateFlow<List<Product>>(emptyList())
-    val categoryProducts: StateFlow<List<Product>> = _categoryProducts
+    private val _categoryProducts = MutableStateFlow<List<ProductData>>(emptyList())
+    val categoryProducts: StateFlow<List<ProductData>> = _categoryProducts
+
+    val allProducts = repository.getAllProducts()
 
     init {
         loadProducts()
@@ -35,21 +37,21 @@ class ProductViewModel(private val repository: ProductRepository) : ViewModel() 
         }
     }
 
-    fun insertProduct(product: Product) {
+    fun insertProduct(productData: ProductData) {
         viewModelScope.launch {
-            repository.insertProduct(product)
+            repository.insertProduct(productData)
         }
     }
 
-    fun updateProduct(product: Product) {
+    fun updateProduct(productData: ProductData) {
         viewModelScope.launch {
-            repository.updateProduct(product)
+            repository.updateProduct(productData)
         }
     }
 
-    fun deleteProduct(product: Product) {
+    fun deleteProduct(productData: ProductData) {
         viewModelScope.launch {
-            repository.deleteProduct(product)
+            repository.deleteProduct(productData)
         }
     }
 

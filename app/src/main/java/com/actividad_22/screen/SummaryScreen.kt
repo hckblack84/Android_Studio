@@ -79,7 +79,6 @@ fun SummaryScreen(
                             contentDescription = "Volver al Inicio"
                         )
                     }
-
                 }
             }
         }

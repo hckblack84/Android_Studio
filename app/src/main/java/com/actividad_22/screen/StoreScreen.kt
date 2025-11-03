@@ -26,8 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.actividad_22.R
+import com.actividad_22.data.local.ProductData
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.MainViewModel
+import com.actividad_22.viewmodel.ProductViewModel
 
 /**
  * Clase de datos que representa un producto en la tienda.
@@ -51,7 +53,7 @@ data class Product(
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StoreScreen(navController: NavHostController, viewModel: MainViewModel) {
+fun StoreScreen(navController: NavHostController, viewModel: MainViewModel, productViewModel: ProductViewModel) {
     // Lista de productos que se mostrarán en la tienda.
     val productList = listOf(
         Product(R.drawable.mouse_pad, "Mouse Pad RGB", 15.99),
@@ -105,7 +107,7 @@ fun StoreScreen(navController: NavHostController, viewModel: MainViewModel) {
                     }
                     // Botón de acción flotante (FAB) para el carrito de compras.
                     FloatingActionButton(
-                        onClick = { },
+                        onClick = { viewModel.navigateTo(Screen.Cart) },
                         modifier = Modifier.offset(y = (-16).dp),
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary
@@ -137,7 +139,17 @@ fun StoreScreen(navController: NavHostController, viewModel: MainViewModel) {
                     imageRes = product.imageRes,
                     productName = product.name,
                     price = product.price,
-                    onAddClick = { println("${product.name} agregado al carrito") },
+                    onAddClick = {
+                        //Agregar a la base de datos
+                        productViewModel.insertProduct(ProductData(
+                            name_product = product.name,
+                            price_product = product.price,
+                            description_product = "",
+                            image_product = product.imageRes,
+                            category_product = 1
+                        ))
+                        println("agregado a la base de datos")
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
             }

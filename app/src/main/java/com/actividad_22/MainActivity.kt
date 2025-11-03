@@ -20,6 +20,7 @@ import com.actividad_22.data.repository.ClientRepository
 import com.actividad_22.data.repository.ProductRepository
 import com.actividad_22.navigation.NavigationEvent
 import com.actividad_22.navigation.Screen
+import com.actividad_22.screen.CartScreen
 import com.actividad_22.ui.theme.Actividad_22Theme
 import com.actividad_22.screen.EventScreen
 import com.actividad_22.screen.HomeScreen
@@ -115,7 +116,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(route = Screen.Store.route) {
-                            StoreScreen(navController = navController, viewModel = viewModel)
+                            StoreScreen(navController = navController, viewModel = viewModel, productViewModel = productViewModel)
                         }
 
                         composable(route = "category/{categoryId}") { backStackEntry ->
@@ -152,6 +153,15 @@ class MainActivity : ComponentActivity() {
                             SummaryScreen(
                                 navController = navController,
                                 userViewModel = userViewModel
+                            )
+                        }
+                        composable (Screen.Cart.route){
+                            val userViewModel: UserViewModel = viewModel(factory = userFactory)
+                            CartScreen(
+                                navController = navController,
+                                userViewModel = userViewModel,
+                                viewModel = viewModel,
+                                productViewModel = productViewModel
                             )
                         }
                     }

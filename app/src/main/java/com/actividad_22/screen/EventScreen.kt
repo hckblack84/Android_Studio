@@ -165,6 +165,7 @@ fun EventScreen(
             ) {
                 Text(text = "Volver al inicio")
             }
+                //Hola
 
         }
 

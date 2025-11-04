@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -50,11 +51,13 @@ fun StartScreen(
         ) {
             Box(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .background(Color(0xAA000000))
                     .padding(16.dp)
             ) {
                 Text(
                     text = "🎮 Bienvenido a Level Up Gaming 🕹️",
+                    modifier = Modifier.align(Alignment.Center),
                     color = Color.White,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
@@ -70,7 +73,6 @@ fun StartScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // TODO: ARREGLAR LoginScreen ANTES DE HABILITAR
             Button(
                 onClick = { viewModel.navigateTo(Screen.Login) },
                 colors = ButtonDefaults.buttonColors(
@@ -92,32 +94,6 @@ fun StartScreen(
             ) {
                 Text("Registrarse")
             }
-            Button(
-                onClick = { viewModel.navigateTo(Screen.Event) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF1976D2),
-                    contentColor = Color.White
-                )
-            ) {
-                Text("Eventos ")
-            }
-            Button(
-                onClick = {viewModel.navigateTo(Screen.Us)},
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Yellow,
-                    contentColor = Color.Black
-                )
-            ) {
-                Text("Habla pe causa de tu madre")
-            }
-            Button(
-                onClick = { viewModel.navigateTo(Screen.Home) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Cyan,
-                    contentColor = Color.Blue)
-                ) {
-                    Text("home cause")
-                }
         }
     }
 }

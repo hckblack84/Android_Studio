@@ -9,10 +9,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -124,14 +127,15 @@ val client = userViewModel.allClients.collectAsState(initial = emptyList())
         }){ innerPadding ->
         Column(
             modifier = Modifier
+                .navigationBarsPadding()
                 .padding(innerPadding)
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
+                .verticalScroll(rememberScrollState())
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(24.dp))
-
 
             ProfileImageWithCamera(
                 imageUri = imageUri,
@@ -153,7 +157,7 @@ val client = userViewModel.allClients.collectAsState(initial = emptyList())
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = client.value.firstOrNull()?.name_client ?: "Sin informacion",
+                text = client.value.firstOrNull()?.name_client ?: "Sin información",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
@@ -176,40 +180,34 @@ val client = userViewModel.allClients.collectAsState(initial = emptyList())
             }
 
             Spacer(modifier = Modifier.height(32.dp))
-InfoCard(
-    icon = Icons.Default.Info,
-    label = "Nombre Completo",
-    value = client.value.firstOrNull()?.name_client ?: "Sin informacion"
-)
+
+            InfoCard(
+                icon = Icons.Default.Info,
+                label = "Nombre Completo",
+                value = client.value.firstOrNull()?.name_client ?: "Sin información"
+            )
             Spacer(modifier = Modifier.height(12.dp))
             InfoCard(
                 icon = Icons.Default.Email,
                 label = "Correo Electrónico",
-                value = client.value.firstOrNull()?.email_client ?: "Sin informacion"
+                value = client.value.firstOrNull()?.email_client ?: "Sin información"
             )
-
             Spacer(modifier = Modifier.height(12.dp))
-
             InfoCard(
                 icon = Icons.Default.Lock,
                 label = "Contraseña",
-                value = client.value.firstOrNull()?.password_client ?: "Sin informacion"
+                value = client.value.firstOrNull()?.password_client ?: "Sin información"
             )
-
             Spacer(modifier = Modifier.height(12.dp))
-
             InfoCard(
                 icon = Icons.Default.LocationOn,
                 label = "Dirección",
-                value = client.value.firstOrNull()?.direction_client ?: "Sin informacion"
-
+                value = client.value.firstOrNull()?.direction_client ?: "Sin información"
             )
 
+            Spacer(modifier = Modifier.height(32.dp))
         }
-
-
     }
-
 
     if (showDialog) {
         ImagePickerDialog(

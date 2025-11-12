@@ -94,6 +94,10 @@ fun StartScreen(
             ) {
                 Text("Registrarse")
             }
+
+            Button(onClick = {viewModel.navigateTo(Screen.Post)}) {
+                Text("lasjhdkjasd")
+            }
         }
     }
 }

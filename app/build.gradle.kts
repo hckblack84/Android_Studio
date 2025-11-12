@@ -44,6 +44,18 @@ android {
 
 dependencies {
 
+    //jetpack compose components
+    implementation("androidx.activity:activity-compose:1.9.0")
+    implementation("androidx.compose.material3:material3:1.3.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
+
+    //Retrofit and Gerson converter
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    //corroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    
     implementation("androidx.room:room-runtime:2.8.2")
     implementation("androidx.room:room-ktx:2.8.2")
     implementation(libs.androidx.room.ktx)
@@ -58,9 +70,9 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.7.5")
 
     implementation("com.google.android.material:material:1.10.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
+
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

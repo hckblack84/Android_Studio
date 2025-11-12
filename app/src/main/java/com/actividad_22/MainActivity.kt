@@ -25,6 +25,7 @@ import com.actividad_22.ui.theme.Actividad_22Theme
 import com.actividad_22.screen.EventScreen
 import com.actividad_22.screen.HomeScreen
 import com.actividad_22.screen.LoginScreen
+import com.actividad_22.screen.PostScreen
 import com.actividad_22.viewmodel.MainViewModel
 import com.actividad_22.screen.ProfileScreen
 import com.actividad_22.screen.RegisterScreen
@@ -33,6 +34,7 @@ import com.actividad_22.screen.StartScreen
 import com.actividad_22.screen.StoreScreen
 import com.actividad_22.screen.SummaryScreen
 import com.actividad_22.screen.UsScreen
+import com.actividad_22.viewmodel.PostViewModel
 import com.actividad_22.viewmodel.ProductViewModel
 import com.actividad_22.viewmodel.UserViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -163,6 +165,10 @@ class MainActivity : ComponentActivity() {
                                 viewModel = viewModel,
                                 productViewModel = productViewModel
                             )
+                        }
+                        composable (Screen.Post.route){
+                            val postViewModel: PostViewModel = viewModel()
+                            PostScreen(postViewModel)
                         }
                     }
                 }

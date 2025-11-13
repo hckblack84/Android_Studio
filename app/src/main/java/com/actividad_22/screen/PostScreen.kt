@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -66,11 +65,13 @@ fun PostScreen(postViewModel: PostViewModel){
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             AsyncImage(
-                                modifier = Modifier.width(10.dp).height(10.dp),
-                                model = post.urlProduct,
+                                model = post.urlImage,
                                 contentDescription = post.nameProduct
                             )
                             Spacer(modifier = Modifier.height(4.dp))
+                            Text(text = "$${post.priceProduct}")
+                            //Text(text = post.urlProduct)
+                            print(post.urlImage)
 
                         }
                     }

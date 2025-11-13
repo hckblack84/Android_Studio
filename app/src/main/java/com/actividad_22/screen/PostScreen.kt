@@ -72,7 +72,6 @@ fun PostScreen(postViewModel: PostViewModel){
                             Text(text = "$${post.priceProduct}")
                             //Text(text = post.urlProduct)
                             print(post.urlImage)
-
                         }
                     }
                 }

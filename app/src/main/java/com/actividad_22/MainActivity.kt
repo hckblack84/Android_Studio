@@ -33,7 +33,6 @@ import com.actividad_22.screen.SettingsScreen
 import com.actividad_22.screen.StartScreen
 import com.actividad_22.screen.StoreScreen
 import com.actividad_22.screen.SummaryScreen
-import com.actividad_22.screen.UsScreen
 import com.actividad_22.viewmodel.PostViewModel
 import com.actividad_22.viewmodel.ProductViewModel
 import com.actividad_22.viewmodel.UserViewModel
@@ -126,9 +125,7 @@ class MainActivity : ComponentActivity() {
 
                         }
 
-                        composable(route = Screen.Us.route) {
-                            UsScreen(navController = navController, viewModel = viewModel)
-                        }
+
 
                         composable(route = Screen.Event.route) {
                             EventScreen(navController = navController, viewModel = viewModel)

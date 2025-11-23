@@ -30,6 +30,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.actividad_22.R
 import com.actividad_22.navigation.Screen
+import com.actividad_22.screen.FloatingBottomBar
 import com.actividad_22.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -131,7 +132,15 @@ fun HomeScreen(navController: NavController, viewModel: MainViewModel = viewMode
                         ) { viewModel.navigateTo(Screen.Event) }
                     }
                 }
-            }
+                // Bottom Navigation Bar flotante con efecto glassmorphism
+                FloatingBottomBar(
+                    onHomeClick = { viewModel.navigateTo(Screen.Home) },
+                    onEventClick = {viewModel.navigateTo(Screen.Event)},
+                    onCartClick = { viewModel.navigateTo(Screen.Cart) },
+                    onStoreClick = { viewModel.navigateTo(Screen.Store) },
+                    onProfileClick = { viewModel.navigateTo(Screen.Profile) },
+                    modifier = Modifier.align(Alignment.BottomCenter)
+                )}
         }
     }
 }
@@ -179,4 +188,12 @@ fun AnimatedCircleButton(imageRes: Int, label: String, onClick: () -> Unit) {
         Spacer(Modifier.height(8.dp))
         Text(label, color = Color.White, fontWeight = FontWeight.SemiBold)
     }
+
+
+
 }
+
+
+
+
+

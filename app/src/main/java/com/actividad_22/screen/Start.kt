@@ -95,9 +95,16 @@ fun StartScreen(
                 Text("Registrarse")
             }
 
-            Button(onClick = {viewModel.navigateTo(Screen.Post)}) {
-                Text("lasjhdkjasd")
-            }
+           
         }
+        // Bottom Navigation Bar flotante con efecto glassmorphism
+        FloatingBottomBar(
+            onHomeClick = { viewModel.navigateTo(Screen.Home) },
+            onEventClick = {viewModel.navigateTo(Screen.Event)},
+            onCartClick = { viewModel.navigateTo(Screen.Cart) },
+            onStoreClick = { viewModel.navigateTo(Screen.Store) },
+            onProfileClick = { viewModel.navigateTo(Screen.Profile) },
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }

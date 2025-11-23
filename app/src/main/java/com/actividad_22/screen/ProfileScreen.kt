@@ -107,105 +107,101 @@ val client = userViewModel.allClients.collectAsState(initial = emptyList())
                 actions = {
                     Spacer(modifier = Modifier.width(48.dp))
                 })
-        },
-        bottomBar = {
-            BottomAppBar(
-                modifier = Modifier.clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
-                containerColor = MaterialTheme.colorScheme.surfaceVariant
-            ) {
-                Spacer(modifier = Modifier.weight(1f)) // Pushes the button to the end
-                IconButton(onClick = { navController.navigate(Screen.Home.route) }) {
-                    Icon(
-                        imageVector = Icons.Filled.Home,
-                        contentDescription = "Ir a Home",
-                        modifier = Modifier.size(28.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                Spacer(modifier = Modifier.width(16.dp))
-            }
-        }){ innerPadding ->
-        Column(
-            modifier = Modifier
-                .navigationBarsPadding()
-                .padding(innerPadding)
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(24.dp))
+        }
 
-            ProfileImageWithCamera(
-                imageUri = imageUri,
-                onClick = {
-                    when (ContextCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.CAMERA
-                    )) {
-                        android.content.pm.PackageManager.PERMISSION_GRANTED -> {
-                            showDialog = true
-                        }
-                        else -> {
-                            permissionLauncher.launch(Manifest.permission.CAMERA)
+        ){ innerPadding ->
+        Box(modifier = Modifier.fillMaxSize()){
+            Column(
+                modifier = Modifier
+                    .navigationBarsPadding()
+                    .padding(innerPadding)
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background)
+                    .verticalScroll(rememberScrollState())
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(24.dp))
+
+                ProfileImageWithCamera(
+                    imageUri = imageUri,
+                    onClick = {
+                        when (ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.CAMERA
+                        )) {
+                            android.content.pm.PackageManager.PERMISSION_GRANTED -> {
+                                showDialog = true
+                            }
+                            else -> {
+                                permissionLauncher.launch(Manifest.permission.CAMERA)
+                            }
                         }
                     }
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = client.value.firstOrNull()?.name_client ?: "Sin información",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                if (estado.aceptaTerminos) {
+                    Surface(
+                        shape = RoundedCornerShape(16.dp),
+                        color = MaterialTheme.colorScheme.secondaryContainer
+                    ) {
+                        Text(
+                            text = "✓ Usuario Verificado",
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    }
                 }
-            )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(32.dp))
 
-            Text(
-                text = client.value.firstOrNull()?.name_client ?: "Sin información",
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+                InfoCard(
+                    icon = Icons.Default.Info,
+                    label = "Nombre Completo",
+                    value = client.value.firstOrNull()?.name_client ?: "Sin información"
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                InfoCard(
+                    icon = Icons.Default.Email,
+                    label = "Correo Electrónico",
+                    value = client.value.firstOrNull()?.email_client ?: "Sin información"
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                InfoCard(
+                    icon = Icons.Default.Lock,
+                    label = "Contraseña",
+                    value = client.value.firstOrNull()?.password_client ?: "Sin información"
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                InfoCard(
+                    icon = Icons.Default.LocationOn,
+                    label = "Dirección",
+                    value = client.value.firstOrNull()?.direction_client ?: "Sin información"
+                )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
-            if (estado.aceptaTerminos) {
-                Surface(
-                    shape = RoundedCornerShape(16.dp),
-                    color = MaterialTheme.colorScheme.secondaryContainer
-                ) {
-                    Text(
-                        text = "✓ Usuario Verificado",
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer
-                    )
-                }
+                Spacer(modifier = Modifier.height(32.dp))
             }
-
-            Spacer(modifier = Modifier.height(32.dp))
-
-            InfoCard(
-                icon = Icons.Default.Info,
-                label = "Nombre Completo",
-                value = client.value.firstOrNull()?.name_client ?: "Sin información"
+            // Bottom Navigation Bar flotante con efecto glassmorphism
+            FloatingBottomBar(
+                onHomeClick = { viewModel.navigateTo(Screen.Home) },
+                onEventClick = {viewModel.navigateTo(Screen.Event)},
+                onCartClick = { viewModel.navigateTo(Screen.Cart) },
+                onStoreClick = { viewModel.navigateTo(Screen.Store) },
+                onProfileClick = { viewModel.navigateTo(Screen.Profile) },
+                modifier = Modifier.align(Alignment.BottomCenter)
             )
-            Spacer(modifier = Modifier.height(12.dp))
-            InfoCard(
-                icon = Icons.Default.Email,
-                label = "Correo Electrónico",
-                value = client.value.firstOrNull()?.email_client ?: "Sin información"
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            InfoCard(
-                icon = Icons.Default.Lock,
-                label = "Contraseña",
-                value = client.value.firstOrNull()?.password_client ?: "Sin información"
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-            InfoCard(
-                icon = Icons.Default.LocationOn,
-                label = "Dirección",
-                value = client.value.firstOrNull()?.direction_client ?: "Sin información"
-            )
-
-            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 

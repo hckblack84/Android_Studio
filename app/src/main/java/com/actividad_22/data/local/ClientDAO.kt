@@ -24,6 +24,15 @@ interface ClientDAO {
     suspend fun deleteClient(client: Client)
 
     @Query("DELETE FROM client")
-    suspend fun clearClientsTable();
+    suspend fun clearClientsTable()
 
+
+    @Query("SELECT * FROM client WHERE email_client = :email AND password_client = :password LIMIT 1")
+    suspend fun login(email: String, password: String): Client?
+
+    @Query("SELECT * FROM client WHERE id_client = :id LIMIT 1")
+    suspend fun getClientById(id: Long): Client?
+
+    @Query("SELECT * FROM client WHERE email_client = :email LIMIT 1")
+    suspend fun getClientByEmail(email: String): Client?
 }

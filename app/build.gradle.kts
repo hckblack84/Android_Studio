@@ -52,7 +52,24 @@ dependencies {
     //Retrofit and Gerson converter
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
     implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.activity:activity-compose:1.8.2")
 
+    // Navegación / ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+
+    // UI - Coil para AsyncImage (Carga de imágenes)
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
+    // Persistencia (Asumiendo que UserViewModel usa Room)
+    implementation("androidx.room:room-ktx:2.6.1")
+
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // Material 3
+    implementation("androidx.compose.material3:material3")
     //corroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     
@@ -60,6 +77,7 @@ dependencies {
     implementation("androidx.room:room-ktx:2.8.2")
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.compose.foundation)
+    implementation(libs.room.ktx)
     ksp("androidx.room:room-compiler:2.8.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.4")

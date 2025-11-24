@@ -422,8 +422,8 @@ fun FloatingBottomBar(
                 containerColor = Color(0xFFF38A1D),
                 contentColor = Color.White,
                 elevation = FloatingActionButtonDefaults.elevation(
-                    defaultElevation = 6.dp,
-                    pressedElevation = 8.dp
+                    defaultElevation = 10.dp,
+                    pressedElevation = 12.dp
                 )
             ) {
                 Icon(
@@ -436,7 +436,6 @@ fun FloatingBottomBar(
             IconButton (
                 onClick = onStoreClick,
                 modifier = Modifier.size(64.dp),
-
                 )
              {
                 Icon(
@@ -445,6 +444,7 @@ fun FloatingBottomBar(
                     tint = Color.White,
                     modifier = Modifier.size(32.dp)
                 )
+
             }
 
 
@@ -455,6 +455,7 @@ fun FloatingBottomBar(
                 modifier = Modifier.size(48.dp)
             ) {
                 Icon(
+
                     imageVector = Icons.Filled.Person,
                     contentDescription = "Profile",
                     tint = Color.White,

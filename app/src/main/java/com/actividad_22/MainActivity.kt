@@ -107,7 +107,7 @@ class MainActivity : ComponentActivity() {
                             val userViewModel: UserViewModel = viewModel(factory = userFactory)
                             ProfileScreen(
                                 navController = navController,
-                                viewModel = viewModel,
+                                mainViewModel = viewModel, // <--- ¡CORRECCIÓN APLICADA AQUÍ!
                                 userViewModel = userViewModel
                             )
                         }

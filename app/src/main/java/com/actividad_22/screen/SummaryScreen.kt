@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -29,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.actividad_22.navigation.Screen
@@ -67,10 +69,15 @@ fun SummaryScreen(
                 ) {
                     // Botón para limpiar la base de datos.
                     // TODO: En el futuro se hará la lógica para limpiar la base de datos.
-                    Button(onClick = {
-                        Log.d("SummaryScreen", "Base de datos limpiada")
-                    }) {
-                        Text("Limpiar DB")
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Button(onClick = {userViewModel.truncateClients()},
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text(text = "Funny button")
                     }
                     // Botón de ícono para navegar a la pantalla de inicio.
                     IconButton(onClick = { navController.navigate(Screen.Home.route) }) {

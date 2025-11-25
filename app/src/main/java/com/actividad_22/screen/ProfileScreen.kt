@@ -343,7 +343,7 @@ fun ProfileHeaderWithCamera(
 
         // Nombre
         Text(
-            text = client?.name_client ?: "Usuario",
+            text = client?.name_client ?: "",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White
@@ -353,7 +353,7 @@ fun ProfileHeaderWithCamera(
 
         // Email
         Text(
-            text = client?.email_client ?: "email@example.com",
+            text = client?.email_client ?: "",
             fontSize = 14.sp,
             fontWeight = FontWeight.Normal,
             color = SecondaryText

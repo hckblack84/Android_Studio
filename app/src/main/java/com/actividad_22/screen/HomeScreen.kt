@@ -186,7 +186,7 @@ fun HomeHeader(
 
         // Saludo personalizado
         Text(
-            text = "$greeting! 👋",
+            text = "$greeting! ",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White

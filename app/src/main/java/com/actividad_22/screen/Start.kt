@@ -10,19 +10,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,80 +36,131 @@ import com.actividad_22.R
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.MainViewModel
 
+private val DeepDarkBackground = Color(0xFF0F1218)
+private val AccentColor = Color(0xFFF38A1D)
+
 @Composable
 fun StartScreen(
     navController: NavController,
     viewModel: MainViewModel = viewModel()
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(id = R.drawable.fondo1),
-            contentDescription = "Fondo",
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
+    Box(
+        modifier =
+            Modifier.fillMaxSize()
+                .background(DeepDarkBackground)
+    )
+    {
 
         Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.height(60.dp))
+
+            // Logo
             Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .background(Color(0xAA000000))
-                    .padding(16.dp)
+                    .size(120.dp)
+                    .background(
+                        Brush.radialGradient(
+                            colors = listOf(
+                                AccentColor.copy(alpha = 0.3f),
+                                Color.Transparent
+                            )
+                        ),
+                        shape = RoundedCornerShape(60.dp)
+                    ),
+                contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "🎮 Bienvenido a Level Up Gaming 🕹️",
-                    modifier = Modifier.align(Alignment.Center),
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    style = TextStyle(
-                        shadow = Shadow(
-                            color = Color.Black,
-                            offset = Offset(2f, 2f),
-                            blurRadius = 8f
-                        )
-                    )
+                Image(
+                    painter = painterResource(id = R.drawable.control),
+                    contentDescription = "Logo",
+                    modifier = Modifier.size(80.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
-            Button(
-                onClick = { viewModel.navigateTo(Screen.Login) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF1976D2),
-                    contentColor = Color.White
-                )
-            ) {
-                Text("Iniciar Sesión")
+
+            // Título
+            val annotatedText = buildAnnotatedString {
+                withStyle(style = SpanStyle(color = Color.White, fontSize = 32.sp, fontWeight = FontWeight.Bold)) {
+                    append("Bienvenido a\n")
+                }
+                withStyle(style = SpanStyle(color = AccentColor, fontSize = 36.sp, fontWeight = FontWeight.ExtraBold)) {
+                    append("Level Up Gaming")
+                }
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            ClickableText(
+                text = annotatedText,
+                onClick = {}
+            )
 
-            Button(
-                onClick = { viewModel.navigateTo(Screen.Register) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF1976D2),
-                    contentColor = Color.White
-                )
+
+            // Espaciador para separar el título de los botones
+            Spacer(modifier = Modifier.height(80.dp))
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                Text("Registrarse")
-            }
 
-           
+
+                Button(
+                    onClick = {
+                        viewModel.navigateTo(Screen.Login)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = AccentColor
+                    ),
+                    shape = RoundedCornerShape(16.dp),
+                ) {
+                    Text(text = "Iniciar Sesion")
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = {
+                        viewModel.navigateTo(Screen.Register)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = AccentColor
+                    ),
+                    shape = RoundedCornerShape(16.dp),
+                ) {
+                    Text(text = "Registrarse")
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = {
+                        viewModel.navigateTo(Screen.Home)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = AccentColor
+                    ),
+                    shape = RoundedCornerShape(16.dp),
+                ) {
+                    Text(text = "Acceder como invitado")
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+
+            }
         }
-        // Bottom Navigation Bar flotante con efecto glassmorphism
-        FloatingBottomBar(
-            onHomeClick = { viewModel.navigateTo(Screen.Home) },
-            onEventClick = {viewModel.navigateTo(Screen.Event)},
-            onCartClick = { viewModel.navigateTo(Screen.Cart) },
-            onStoreClick = { viewModel.navigateTo(Screen.Store) },
-            onProfileClick = { viewModel.navigateTo(Screen.Profile) },
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
     }
 }

@@ -3,7 +3,6 @@ package com.actividad_22.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.actividad_22.apiRest.model.Post
 import com.actividad_22.apiRest.model.Product
 import com.actividad_22.apiRest.repository.PostRepository
 import kotlinx.coroutines.flow.Flow

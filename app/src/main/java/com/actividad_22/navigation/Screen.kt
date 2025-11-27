@@ -28,6 +28,7 @@ sealed class Screen(val route : String){
     data object Summary : Screen(route = "Summary_page")
     data object Cart : Screen(route = "Cart_page")
     data object Post : Screen(route = "Post_Page")
+    data object PostCart : Screen(route = "PostCart_Page")
 }
 
 //Permite saber el parametro de la ruta para comenzar con la navegacion de manera segura evitando bucles

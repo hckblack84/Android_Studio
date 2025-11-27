@@ -1,17 +1,33 @@
 package com.actividad_22.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.DeleteSweep
 import androidx.compose.material.icons.filled.ShoppingBag
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -21,33 +37,28 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.actividad_22.data.local.ProductData
-import com.actividad_22.navigation.Screen
+import coil.compose.AsyncImage
+import com.actividad_22.apiRest.model.Product
 import com.actividad_22.viewmodel.MainViewModel
 import com.actividad_22.viewmodel.PostViewModel
-import com.actividad_22.viewmodel.ProductViewModel
-import com.actividad_22.viewmodel.UserViewModel
 
 @Composable
-fun CartScreen(
+fun PostCartScreen(
     navController: NavController,
-    userViewModel: UserViewModel,
     viewModel: MainViewModel = viewModel(),
-    productViewModel: ProductViewModel,
     postViewModel: PostViewModel
 ) {
 
-    val productList by productViewModel.products.collectAsState()
+    val postProductList by postViewModel._postCartProducts.collectAsState()
 
     // Calcular total
-    val totalPrice = productList.sumOf { it.price_product }
+    val totalPrice = postProductList.sumOf { it.priceProduct }
 
     Box(
         modifier = Modifier
@@ -60,12 +71,12 @@ fun CartScreen(
                 .padding(bottom = 100.dp) // Espacio para la barra flotante
         ) {
             // Header personalizado
-            CartHeader(
-                itemCount = productList.size,
-                onClearCart = { productViewModel.deleteAllProducts() }
-            )
+            //CartHeader(
+            //    itemCount = productList.size,
+            //    onClearCart = { productViewModel.deleteAllProducts() }
+            //)
 
-            if (productList.isNotEmpty()) {
+            if (postProductList.isNotEmpty()) {
                 // Lista de productos
                 LazyColumn(
                     modifier = Modifier
@@ -74,10 +85,10 @@ fun CartScreen(
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(productList) { product ->
-                        ProductCartItem(
+                    items(postProductList) { product ->
+                        PostProductCartItem(
                             product = product,
-                            onDelete = { productViewModel.deleteProductById(product.id_product) }
+                            onDelete = { print("product deleted but now not implemented" + product.nameProduct) }
                         )
                     }
 
@@ -88,97 +99,32 @@ fun CartScreen(
                 }
 
                 // Footer con total
-                CartFooter(
+                PostCartFooter(
                     totalPrice = totalPrice,
-                    itemCount = productList.size
+                    itemCount = postProductList.size
                 )
             } else {
                 // Estado vacío
-                EmptyCartState()
+                PostEmptyCartState()
             }
         }
 
         // Bottom Navigation Bar flotante con efecto glassmorphism
-        FloatingBottomBar(
-            onHomeClick = { viewModel.navigateTo(Screen.Home) },
-            onEventClick = {viewModel.navigateTo(Screen.Event)},
-            onCartClick = { viewModel.navigateTo(Screen.Cart) },
-            onStoreClick = { viewModel.navigateTo(Screen.Store) },
-            onProfileClick = { viewModel.navigateTo(Screen.Profile) },
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
+        //FloatingBottomBar(
+        //    onHomeClick = { viewModel.navigateTo(Screen.Home) },
+        //    onEventClick = {viewModel.navigateTo(Screen.Event)},
+        //    onCartClick = { viewModel.navigateTo(Screen.Cart) },
+        //    onStoreClick = { viewModel.navigateTo(Screen.Store) },
+        //    onProfileClick = { viewModel.navigateTo(Screen.Profile) },
+        //    modifier = Modifier.align(Alignment.BottomCenter)
+        //)
     }
 }
 
-@Composable
-fun CartHeader(
-    itemCount: Int,
-    onClearCart: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFF1A1F2E),
-                        Color(0xFF0F1218)
-                    )
-                )
-            )
-            .padding(horizontal = 24.dp, vertical = 20.dp)
-    ) {
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(
-                    text = "Mi Carrito",
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = "$itemCount ${if (itemCount == 1) "producto" else "productos"}",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = Color(0xFF8B92A8)
-                )
-            }
-
-            // Botón limpiar carrito
-            if (itemCount > 0) {
-                IconButton(
-                    onClick = onClearCart,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .background(
-                            Color(0xFFFF4444).copy(alpha = 0.2f),
-                            shape = CircleShape
-                        )
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.DeleteSweep,
-                        contentDescription = "Vaciar carrito",
-                        tint = Color(0xFFFF4444),
-                        modifier = Modifier.size(24.dp)
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Composable
-fun ProductCartItem(
-    product: ProductData,
+fun PostProductCartItem(
+    product: Product,
     onDelete: () -> Unit
 ) {
     Card(
@@ -212,9 +158,9 @@ fun ProductCartItem(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
-                    painter = painterResource(id = product.image_product),
-                    contentDescription = product.name_product,
+                AsyncImage(
+                    model = product.urlImage,
+                    contentDescription = product.nameProduct,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(12.dp),
@@ -233,7 +179,7 @@ fun ProductCartItem(
             ) {
                 Column {
                     Text(
-                        text = product.name_product,
+                        text = product.nameProduct,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
@@ -257,7 +203,7 @@ fun ProductCartItem(
                 ) {
                     // Precio
                     Text(
-                        text = "$${String.format("%.2f", product.price_product)}",
+                        text = "$" + product.priceProduct,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFF38A1D)
@@ -287,8 +233,8 @@ fun ProductCartItem(
 }
 
 @Composable
-fun CartFooter(
-    totalPrice: Double,
+fun PostCartFooter(
+    totalPrice: Int,
     itemCount: Int
 ) {
     Column(
@@ -328,7 +274,7 @@ fun CartFooter(
                     color = Color(0xFF8B92A8)
                 )
                 Text(
-                    text = "$${String.format("%.2f", totalPrice)}",
+                    text = "$${totalPrice}",
                     fontSize = 32.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
@@ -365,7 +311,7 @@ fun CartFooter(
 }
 
 @Composable
-fun EmptyCartState() {
+fun PostEmptyCartState() {
     Column(
         modifier = Modifier
             .fillMaxSize()

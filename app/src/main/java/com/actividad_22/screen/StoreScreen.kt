@@ -35,7 +35,9 @@ import com.actividad_22.R
 import com.actividad_22.data.local.ProductData
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.MainViewModel
+import com.actividad_22.viewmodel.PostViewModel
 import com.actividad_22.viewmodel.ProductViewModel
+import kotlin.collections.emptyList
 
 data class Product(
     val imageRes: Int,
@@ -48,8 +50,14 @@ data class Product(
 fun StoreScreen(
     navController: NavHostController,
     viewModel: MainViewModel,
-    productViewModel: ProductViewModel
+    productViewModel: ProductViewModel,
+    postViewModel: PostViewModel
 ) {
+    /////////////////////////////////////////Products from api/////////////////////////////////
+    val productsPostAviable = postViewModel.postList.collectAsState(initial = emptyList()).value
+
+    val productsAviable = productViewModel.allProducts.collectAsState(initial = emptyList()).value
+
     val productList = listOf(
         Product(
             R.drawable.mouse_pad,
@@ -111,7 +119,6 @@ Row() {
             "")
 }
     Box(modifier = Modifier.fillMaxSize()) {
-
 
         // Contenido principal - Lista de productos
         LazyColumn(

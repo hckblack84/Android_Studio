@@ -18,6 +18,13 @@ class PostViewModel : ViewModel(){
 
     val postList: StateFlow<List<Product>> = _postList
 
+
+    val _postCartProducts = MutableStateFlow<List<Product>>(emptyList())
+
+    val postCartProducts: StateFlow<List<Product>> = _postCartProducts
+
+
+
     init {
         fetchPosts()
     }
@@ -31,5 +38,11 @@ class PostViewModel : ViewModel(){
             }
         }
     }
+
+    fun addProductToCart(product: Product){
+        _postCartProducts.value += product
+    }
+
+
 
 }

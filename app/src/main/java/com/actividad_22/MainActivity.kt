@@ -25,6 +25,7 @@ import com.actividad_22.ui.theme.Actividad_22Theme
 import com.actividad_22.screen.EventScreen
 import com.actividad_22.screen.HomeScreen
 import com.actividad_22.screen.LoginScreen
+import com.actividad_22.screen.PostCartScreen
 import com.actividad_22.screen.PostScreen
 import com.actividad_22.viewmodel.MainViewModel
 import com.actividad_22.screen.ProfileScreen
@@ -63,6 +64,9 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 )
+
+                val postViewModel:PostViewModel = viewModel()
+
 
 
 
@@ -117,7 +121,8 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(route = Screen.Store.route) {
-                            StoreScreen(navController = navController, viewModel = viewModel, productViewModel = productViewModel)
+                            val postViewModel: PostViewModel = viewModel()
+                            StoreScreen(navController = navController, viewModel = viewModel, productViewModel = productViewModel, postViewModel = postViewModel)
                         }
 
                         composable(route = "category/{categoryId}") { backStackEntry ->
@@ -160,12 +165,19 @@ class MainActivity : ComponentActivity() {
                                 navController = navController,
                                 userViewModel = userViewModel,
                                 viewModel = viewModel,
-                                productViewModel = productViewModel
+                                productViewModel = productViewModel,
+                                postViewModel = postViewModel
                             )
                         }
                         composable (Screen.Post.route){
-                            val postViewModel: PostViewModel = viewModel()
-                            PostScreen(postViewModel)
+                            PostScreen(postViewModel, viewModel)
+                        }
+                        composable (Screen.PostCart.route) {
+                            PostCartScreen(
+                                navController = navController,
+                                viewModel = viewModel,
+                                postViewModel = postViewModel
+                            )
                         }
                     }
                 }

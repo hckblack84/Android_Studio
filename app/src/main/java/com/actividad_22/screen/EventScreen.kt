@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,6 +29,12 @@ import androidx.navigation.NavController
 import com.actividad_22.R
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.MainViewModel
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 
 // ===================================================================
 // COLORES ESTANDARIZADOS (AESTHETIC)
@@ -111,6 +118,36 @@ fun EventScreen(
                     style = MaterialTheme.typography.titleMedium,
                     color = SecondaryText
                 )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                val marquitosHouseLocation = LatLng(-33.0337, -71.5332)
+
+                val cameraPositionState = rememberCameraPositionState {
+                    position = CameraPosition.fromLatLngZoom(
+                        marquitosHouseLocation,
+                        15f
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .padding(horizontal = 8.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .border(1.dp, OutlineColor, RoundedCornerShape(12.dp))
+                ) {
+                    GoogleMap(
+                        cameraPositionState = cameraPositionState,
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Marker(
+                            state = MarkerState(position = marquitosHouseLocation),
+                            title = "Marquitos House"
+                        )
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(20.dp))
 

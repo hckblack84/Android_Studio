@@ -8,7 +8,7 @@ import com.actividad_22.data.repository.ProductRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-class ProductViewModel(private val repository: ProductRepository) : ViewModel() {
+open class ProductViewModel(private val repository: ProductRepository) : ViewModel() {
 
     private val _products = MutableStateFlow<List<ProductData>>(emptyList())
     val products: StateFlow<List<ProductData>> = _products

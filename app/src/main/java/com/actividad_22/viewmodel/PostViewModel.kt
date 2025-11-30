@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class PostViewModel : ViewModel(){
+open class PostViewModel : ViewModel(){
 
     private val repository = PostRepository()
 
-    private val _postList = MutableStateFlow<List<Product>>(emptyList())
+    val _postList = MutableStateFlow<List<Product>>(emptyList())
 
-    val postList: StateFlow<List<Product>> = _postList
+    open val postList: StateFlow<List<Product>> = _postList
 
 
     val _postCartProducts = MutableStateFlow<List<Product>>(emptyList())

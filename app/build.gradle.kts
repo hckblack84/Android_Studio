@@ -44,6 +44,26 @@ android {
 
 dependencies {
 
+    implementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    implementation(libs.androidx.ui.test.junit4)
+    //Unit test dependencies
+    //Kotest
+    testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
+    testImplementation("io.kotest:kotest-assertions-core:5.8.0")
+
+    // JUnit 5
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+
+    //MockK
+    testImplementation("io.mockk:mockk:1.13.13")
+
+    // Compose UI test
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.2")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.2")
+
+
+
     //jetpack compose components
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("androidx.compose.material3:material3:1.3.0")

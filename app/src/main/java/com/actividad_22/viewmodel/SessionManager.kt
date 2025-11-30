@@ -4,7 +4,7 @@ package com.actividad_22.viewmodel
 import android.content.Context
 import android.content.SharedPreferences
 
-class SessionManager(context: Context) {
+open class SessionManager(context: Context) {
 
     private val prefs: SharedPreferences =
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)

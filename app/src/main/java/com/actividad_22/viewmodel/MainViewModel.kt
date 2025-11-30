@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel(){
+open class MainViewModel : ViewModel(){
     private val _navigationEvents = MutableSharedFlow<NavigationEvent>()
 
-    val navigationEvents: SharedFlow<NavigationEvent> = _navigationEvents.asSharedFlow()
+    open val navigationEvents: SharedFlow<NavigationEvent> = _navigationEvents.asSharedFlow()
 
 
     fun navigateTo(screen: Screen){

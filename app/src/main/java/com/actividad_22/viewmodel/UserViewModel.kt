@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class UserViewModel(private val clientRepository: ClientRepository) : ViewModel() {
+open class UserViewModel(private val clientRepository: ClientRepository) : ViewModel() {
 
     val emailVerified: EmailVerified = EmailVerified()
     val allClients = clientRepository.allClients

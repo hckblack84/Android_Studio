@@ -16,7 +16,7 @@ open class MainViewModel : ViewModel(){
     open val navigationEvents: SharedFlow<NavigationEvent> = _navigationEvents.asSharedFlow()
 
 
-    fun navigateTo(screen: Screen){
+    open fun navigateTo(screen: Screen){
         CoroutineScope(context = Dispatchers.Main).launch {
             _navigationEvents.emit(value = NavigationEvent.Navigateto(route = screen))
         }

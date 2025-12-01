@@ -42,7 +42,7 @@ open class UserViewModel(private val clientRepository: ClientRepository) : ViewM
     // ===== NUEVAS FUNCIONES PARA SESIÓN =====
 
     // Login y retornar el cliente
-    suspend fun login(email: String, password: String): Client? {
+    open suspend fun login(email: String, password: String): Client? {
         val client = clientRepository.login(email, password)
         _currentClient.value = client
         return client

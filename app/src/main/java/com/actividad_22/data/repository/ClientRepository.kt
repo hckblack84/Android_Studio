@@ -4,7 +4,7 @@ import com.actividad_22.data.local.Client
 import com.actividad_22.data.local.ClientDAO
 import kotlinx.coroutines.flow.Flow
 
-class ClientRepository(private val clientDAO: ClientDAO) {
+open class ClientRepository(private val clientDAO: ClientDAO) {
 
     val allClients: Flow<List<Client>> = clientDAO.findAll()
 

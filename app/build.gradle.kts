@@ -11,6 +11,14 @@ android {
     namespace = "com.actividad_22"
     compileSdk = 36
 
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.actividad_22"
         minSdk = 24
@@ -47,6 +55,7 @@ dependencies {
     implementation("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation(libs.androidx.ui.test.junit4)
+    implementation(libs.androidx.navigation.testing)
     //Unit test dependencies
     //Kotest
     testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
@@ -57,6 +66,7 @@ dependencies {
 
     //MockK
     testImplementation("io.mockk:mockk:1.13.13")
+    androidTestImplementation("io.mockk:mockk-android:1.13.11")
 
     // Compose UI test
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.2")

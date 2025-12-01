@@ -4,7 +4,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
-import com.actividad_22.apiRest.model.Product
+import com.actividad_22.apiRest.model.ApiProduct
 import com.actividad_22.navigation.NavigationEvent
 import com.actividad_22.screen.PostScreen
 import com.actividad_22.viewmodel.MainViewModel
@@ -21,8 +21,8 @@ class PostScreenTest {
     @Test
     fun mainTitleAppears(){
 
-        val fakeProducts = listOf(
-            Product(
+        val fakeApiProducts = listOf(
+            ApiProduct(
                 1,
                 "name",
                 "category",
@@ -36,7 +36,7 @@ class PostScreenTest {
         )
 
         val fakePostViewModel = object : PostViewModel(){
-            override val postList = MutableStateFlow(fakeProducts)
+            override val postList = MutableStateFlow(fakeApiProducts)
         }
 
         val fakeMainViewModel = object : MainViewModel(){
@@ -48,7 +48,7 @@ class PostScreenTest {
             PostScreen(fakePostViewModel, mainViewModel = fakeMainViewModel)
         }
 
-        composableRule.onNodeWithText(fakeProducts[0].nameProduct).assertIsDisplayed()
+        composableRule.onNodeWithText(fakeApiProducts[0].nameProduct).assertIsDisplayed()
 
     }
 }

@@ -1,6 +1,5 @@
 package com.actividad_22.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,7 +19,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
@@ -31,7 +28,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -47,14 +43,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.actividad_22.apiRest.model.Product
-import com.actividad_22.data.local.ProductData
+import com.actividad_22.apiRest.model.ApiProduct
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.MainViewModel
 import com.actividad_22.viewmodel.PostViewModel
@@ -88,9 +82,9 @@ fun PostScreen(postViewModel: PostViewModel, mainViewModel: MainViewModel){
             ) {
                 items(posts) { product ->
                     PostProductCard(
-                        product = product,
+                        apiProduct = product,
                         addToCartEvent = {
-                            postViewModel.addProductToCart(product = product)
+                            postViewModel.addProductToCart(apiProduct = product)
                             println("Producto agregado al carrito: ${product.nameProduct}")
                             println("Carrito actual: ${postViewModel.postCartProducts.value}")
                         }
@@ -104,7 +98,7 @@ fun PostScreen(postViewModel: PostViewModel, mainViewModel: MainViewModel){
 
 @Composable
 fun PostProductCard(
-    product: Product,
+    apiProduct: ApiProduct,
     addToCartEvent: () -> Unit
 ) {
     var quantity by remember { mutableStateOf(1) }
@@ -142,8 +136,8 @@ fun PostProductCard(
                 contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
-                    model = product.urlImage,
-                    contentDescription = product.nameProduct,
+                    model = apiProduct.urlImage,
+                    contentDescription = apiProduct.nameProduct,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(24.dp),
@@ -178,7 +172,7 @@ fun PostProductCard(
 
             // Categoría pequeña
             Text(
-                text = product.categoryProduct,
+                text = apiProduct.categoryProduct,
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Medium,
                 color = Color(0xFF8B92A8),
@@ -189,7 +183,7 @@ fun PostProductCard(
 
             // Nombre del producto
             Text(
-                text = product.nameProduct,
+                text = apiProduct.nameProduct,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
@@ -200,7 +194,7 @@ fun PostProductCard(
 
             // Precio destacado
             Text(
-                text = "$" + (product.priceProduct),
+                text = "$" + (apiProduct.priceProduct),
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFFF38A1D)
@@ -209,9 +203,9 @@ fun PostProductCard(
             Spacer(modifier = Modifier.height(16.dp))
 
             // Descripción
-            if (product.descriptionProduct.isNotEmpty()) {
+            if (apiProduct.descriptionProduct.isNotEmpty()) {
                 Text(
-                    text = product.descriptionProduct,
+                    text = apiProduct.descriptionProduct,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal,
                     color = Color(0xFFB0B7C3),

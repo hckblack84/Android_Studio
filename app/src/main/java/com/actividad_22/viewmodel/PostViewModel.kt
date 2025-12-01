@@ -2,10 +2,8 @@ package com.actividad_22.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.actividad_22.apiRest.model.Product
+import com.actividad_22.apiRest.model.ApiProduct
 import com.actividad_22.apiRest.repository.PostRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -14,14 +12,14 @@ open class PostViewModel : ViewModel(){
 
     private val repository = PostRepository()
 
-    val _postList = MutableStateFlow<List<Product>>(emptyList())
+    val _postList = MutableStateFlow<List<ApiProduct>>(emptyList())
 
-    open val postList: StateFlow<List<Product>> = _postList
+    open val postList: StateFlow<List<ApiProduct>> = _postList
 
 
-    val _postCartProducts = MutableStateFlow<List<Product>>(emptyList())
+    val _postCartProducts = MutableStateFlow<List<ApiProduct>>(emptyList())
 
-    val postCartProducts: StateFlow<List<Product>> = _postCartProducts
+    val postCartProducts: StateFlow<List<ApiProduct>> = _postCartProducts
 
 
 
@@ -39,8 +37,8 @@ open class PostViewModel : ViewModel(){
         }
     }
 
-    fun addProductToCart(product: Product){
-        _postCartProducts.value += product
+    fun addProductToCart(apiProduct: ApiProduct){
+        _postCartProducts.value += apiProduct
     }
 
 

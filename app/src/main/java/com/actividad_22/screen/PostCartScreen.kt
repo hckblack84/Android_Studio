@@ -44,7 +44,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.actividad_22.apiRest.model.Product
+import com.actividad_22.apiRest.model.ApiProduct
 import com.actividad_22.viewmodel.MainViewModel
 import com.actividad_22.viewmodel.PostViewModel
 
@@ -87,7 +87,7 @@ fun PostCartScreen(
                 ) {
                     items(postProductList) { product ->
                         PostProductCartItem(
-                            product = product,
+                            apiProduct = product,
                             onDelete = { print("product deleted but now not implemented" + product.nameProduct) }
                         )
                     }
@@ -124,7 +124,7 @@ fun PostCartScreen(
 
 @Composable
 fun PostProductCartItem(
-    product: Product,
+    apiProduct: ApiProduct,
     onDelete: () -> Unit
 ) {
     Card(
@@ -159,8 +159,8 @@ fun PostProductCartItem(
                 contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
-                    model = product.urlImage,
-                    contentDescription = product.nameProduct,
+                    model = apiProduct.urlImage,
+                    contentDescription = apiProduct.nameProduct,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(12.dp),
@@ -179,7 +179,7 @@ fun PostProductCartItem(
             ) {
                 Column {
                     Text(
-                        text = product.nameProduct,
+                        text = apiProduct.nameProduct,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
@@ -203,7 +203,7 @@ fun PostProductCartItem(
                 ) {
                     // Precio
                     Text(
-                        text = "$" + product.priceProduct,
+                        text = "$" + apiProduct.priceProduct,
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFF38A1D)

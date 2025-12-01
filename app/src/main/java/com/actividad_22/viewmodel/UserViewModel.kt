@@ -20,7 +20,7 @@ open class UserViewModel(private val clientRepository: ClientRepository) : ViewM
     val allClients = clientRepository.allClients
 
     // Estado del cliente actual logueado
-    private val _currentClient = MutableStateFlow<Client?>(null)
+    val _currentClient = MutableStateFlow<Client?>(null)
     val currentClient: StateFlow<Client?> = _currentClient
 
     // Estado del formulario
@@ -92,7 +92,7 @@ open class UserViewModel(private val clientRepository: ClientRepository) : ViewM
         val estadoActual = _estado.value
         print(estadoActual.correo)
         val errores = UsuarioError(
-            nombre = if (estadoActual.nombre.trim().length in 4..10)
+            nombre = if (estadoActual.nombre.trim().length in 4..50)
                 null else "Porfavor ingrese un nombre entre 4 y 10 caracteres",
             correo = if (emailVerified.isValidEmail(estadoActual.correo.trim()))
                 null else "Correo invalido",

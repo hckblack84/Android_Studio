@@ -110,7 +110,14 @@ fun HomeScreen(
 
                 Spacer(modifier = Modifier.height(32.dp))
             }
-
+            FloatingBottomBar(
+                onHomeClick = { viewModel.navigateTo(Screen.Home) },
+                onEventClick = {viewModel.navigateTo(Screen.Event)},
+                onCartClick = { viewModel.navigateTo(Screen.Cart) },
+                onStoreClick = { viewModel.navigateTo(Screen.Store) },
+                onProfileClick = { viewModel.navigateTo(Screen.Profile) },
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
 
         }
     }
@@ -253,8 +260,11 @@ fun WelcomeBanner() {
                 color = SecondaryText,
                 textAlign = TextAlign.Center
             )
+
         }
+
     }
+
 }
 
 @Composable

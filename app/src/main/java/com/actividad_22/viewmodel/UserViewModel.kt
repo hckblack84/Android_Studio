@@ -88,7 +88,9 @@ open class UserViewModel(private val clientRepository: ClientRepository) : ViewM
     }
 
     fun validarFormulario(): Boolean {
+
         val estadoActual = _estado.value
+        print(estadoActual.correo)
         val errores = UsuarioError(
             nombre = if (estadoActual.nombre.trim().length in 4..10)
                 null else "Porfavor ingrese un nombre entre 4 y 10 caracteres",

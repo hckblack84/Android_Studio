@@ -6,10 +6,10 @@ import androidx.room.PrimaryKey
 class ProductData(
     @PrimaryKey(autoGenerate = true) val id_product:Long = 0,
     val name_product:String,
-    val price_product:Double,
+    val price_product: Int,
     val description_product:String,
-    val image_product:Int,
-    val category_product: Int
+    val image_product:String,
+    val category_product: String
 ) {
 
 }

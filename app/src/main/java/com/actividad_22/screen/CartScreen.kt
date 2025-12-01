@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.actividad_22.data.local.ProductData
 import com.actividad_22.navigation.Screen
 import com.actividad_22.viewmodel.MainViewModel
@@ -94,7 +95,7 @@ fun CartScreen(
                 )
             } else {
                 // Estado vacío
-                EmptyCartState()
+                EmptyCartState(navController = navController)
             }
         }
 
@@ -212,8 +213,8 @@ fun ProductCartItem(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
-                    painter = painterResource(id = product.image_product),
+                AsyncImage(
+                    model = product.image_product,
                     contentDescription = product.name_product,
                     modifier = Modifier
                         .fillMaxSize()
@@ -243,7 +244,7 @@ fun ProductCartItem(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = "Categoría: Gaming",
+                        text = "Categoría: ${product.category_product}",
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Normal,
                         color = Color(0xFF8B92A8)
@@ -257,7 +258,7 @@ fun ProductCartItem(
                 ) {
                     // Precio
                     Text(
-                        text = "$${String.format("%.2f", product.price_product)}",
+                        text = "$${product.price_product}",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFF38A1D)
@@ -288,7 +289,7 @@ fun ProductCartItem(
 
 @Composable
 fun CartFooter(
-    totalPrice: Double,
+    totalPrice: Int,
     itemCount: Int
 ) {
     Column(
@@ -328,8 +329,8 @@ fun CartFooter(
                     color = Color(0xFF8B92A8)
                 )
                 Text(
-                    text = "$${String.format("%.2f", totalPrice)}",
-                    fontSize = 32.sp,
+                    text = "$${totalPrice}",
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White
                 )
@@ -365,7 +366,9 @@ fun CartFooter(
 }
 
 @Composable
-fun EmptyCartState() {
+fun EmptyCartState(
+    navController: NavController
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -413,7 +416,7 @@ fun EmptyCartState() {
 
         // Botón para ir a la tienda (opcional)
         Button(
-            onClick = { /* Navegar a tienda */ },
+            onClick = { navController.popBackStack() },
             modifier = Modifier
                 .height(50.dp)
                 .width(200.dp),

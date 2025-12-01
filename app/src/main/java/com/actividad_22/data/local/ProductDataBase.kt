@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import kotlin.concurrent.Volatile
-@Database(entities = [ProductData::class], version = 2, exportSchema = false)
+@Database(entities = [ProductData::class], version = 4, exportSchema = false)
 abstract class ProductDataBase : RoomDatabase() {
     abstract fun productDao(): ProductDAO
 
@@ -21,7 +21,8 @@ companion object {
                 context.applicationContext,
                 ProductDataBase::class.java,
                 "product_database"
-            ).build()
+            ).fallbackToDestructiveMigration()
+                .build()
             INTANCE = instance
             instance
 

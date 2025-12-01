@@ -68,7 +68,7 @@ open class ProductViewModel(private val repository: ProductRepository) : ViewMod
     }
 
     // Obtener categorías únicas de los productos
-    fun getCategories(): List<Categoria> {
+    /*fun getCategories(): List<Categoria> {
         val uniqueCategories = _products.value
             .map { it.category_product }
             .distinct()
@@ -81,7 +81,7 @@ open class ProductViewModel(private val repository: ProductRepository) : ViewMod
                 imageRes = getCategoryImage(categoryId)
             )
         }
-    }
+    }*/
 
     private fun getCategoryName(category: Int): String {
         return when(category) {

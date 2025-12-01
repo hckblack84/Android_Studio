@@ -90,20 +90,23 @@ open class UserViewModel(private val clientRepository: ClientRepository) : ViewM
     fun validarFormulario(): Boolean {
         val estadoActual = _estado.value
         val errores = UsuarioError(
-            nombre = if (estadoActual.nombre.trim().length >= 3 && estadoActual.nombre.trim().length <= 10)
-                null else "Porfavor ingrese un nombre entre 3 y 10 caracteres",
-            correo = if (emailVerified.isValidEmail(estadoActual.correo.trim()) || !estadoActual.correo.isBlank())
+            nombre = if (estadoActual.nombre.trim().length in 4..10)
+                null else "Porfavor ingrese un nombre entre 4 y 10 caracteres",
+            correo = if (emailVerified.isValidEmail(estadoActual.correo.trim()))
                 null else "Correo invalido",
-            clave = if (estadoActual.clave.length >= 4 && estadoActual.clave.length <= 8)
+            clave = if (estadoActual.clave.length in 4..8)
                 null else "Ingrese una contraseña entre 4 y 8 caracteres",
             direccion = if (estadoActual.direccion.isBlank())
-                "Porfavor ingrese una direccion" else null
+                "Porfavor ingrese una direccion" else null,
+            aceptaTerminos = if (estadoActual.aceptaTerminos) null else "Debe aceptar los terminos y condiciones"
+
         )
         val cantErrores = listOfNotNull(
             errores.nombre,
             errores.correo,
             errores.clave,
-            errores.direccion
+            errores.direccion,
+            errores.aceptaTerminos
         ).isNotEmpty()
 
         _estado.update { it.copy(errores = errores) }

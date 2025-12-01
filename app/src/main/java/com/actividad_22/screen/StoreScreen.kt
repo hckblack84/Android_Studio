@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.actividad_22.R
 import com.actividad_22.data.local.ProductData
 import com.actividad_22.navigation.Screen
@@ -40,10 +41,11 @@ import com.actividad_22.viewmodel.ProductViewModel
 import kotlin.collections.emptyList
 
 data class Product(
-    val imageRes: Int,
+    val imageRes: String,
     val name: String,
     val price: Double,
-    val description: String = ""
+    val description: String = "",
+    val category: String = ""
 )
 
 @Composable
@@ -60,55 +62,55 @@ fun StoreScreen(
 
     val productList = listOf(
         Product(
-            R.drawable.mouse_pad,
+            R.drawable.mouse_pad.toString(),
             "Mouse Pad RGB",
             15.99,
             "Enhance your gaming setup with this vibrant RGB mouse pad."
         ),
         Product(
-            R.drawable.teclado_gamer,
+            R.drawable.teclado_gamer.toString(),
             "Teclado Mecánico",
             89.99,
             "Mechanical gaming keyboard with customizable RGB lighting."
         ),
         Product(
-            R.drawable.audifonos_gamer,
+            R.drawable.audifonos_gamer.toString(),
             "Audífonos Gamer",
             45.99,
             "Immersive 7.1 surround sound gaming headset."
         ),
         Product(
-            R.drawable.camara_gamer,
+            R.drawable.camara_gamer.toString(),
             "Webcam HD",
             59.99,
             "Crystal clear 1080p webcam for streaming and video calls."
         ),
         Product(
-            R.drawable.microfono_gamer,
+            R.drawable.microfono_gamer.toString(),
             "Micrófono USB",
             79.99,
             "Professional USB microphone with studio-quality sound."
         ),
         Product(
-            R.drawable.monitor_gamer,
+            R.drawable.monitor_gamer.toString(),
             "Monitor 24''",
             199.99,
             "144Hz gaming monitor with vibrant colors and low response time."
         ),
         Product(
-            R.drawable.silla_gamer,
+            R.drawable.silla_gamer.toString(),
             "Silla Gamer",
             299.99,
             "Ergonomic gaming chair designed for long gaming sessions."
         ),
         Product(
-            R.drawable.luquitas,
+            R.drawable.luquitas.toString(),
             "Escritorio",
             149.99,
             "Spacious gaming desk with cable management system."
         ),
         Product(
-            R.drawable.lampara_led,
+            R.drawable.lampara_led.toString(),
             "Lámpara LED",
             29.99,
             "RGB LED lamp to complete your gaming atmosphere."
@@ -127,17 +129,22 @@ Row() {
                 .background(Color(0xFF0F1218)),
             contentPadding = PaddingValues(bottom = 100.dp)
         ) {
-            items(productList) { product ->
+            items(productsPostAviable) { product ->
                 ProductCard(
-                    product = product,
+                    product = Product(product.urlImage,
+                                        product.nameProduct,
+                                            product.priceProduct.toDouble(),
+                                    product.descriptionProduct,
+                                                product.categoryProduct),
                     addToCartEvent = {
                         productViewModel.insertProduct(
                             ProductData(
-                                name_product = product.name,
-                                price_product = product.price,
-                                description_product = product.description,
-                                image_product = product.imageRes,
-                                category_product = 1
+                                name_product = product.nameProduct,
+                                price_product = product.priceProduct,
+                                description_product = product.descriptionProduct,
+                                image_product = product.urlImage,
+                                category_product = product.categoryProduct
+
                             )
                         )
                     }
@@ -205,8 +212,8 @@ fun ProductCard(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
-                    painter = painterResource(id = product.imageRes),
+                AsyncImage(
+                    model = product.imageRes,
                     contentDescription = product.name,
                     modifier = Modifier
                         .fillMaxSize()
@@ -240,7 +247,7 @@ fun ProductCard(
 
             // Categoría pequeña
             Text(
-                text = "GAMING",
+                text = product.category,
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Medium,
                 color = Color(0xFF8B92A8),
@@ -262,7 +269,7 @@ fun ProductCard(
 
             // Precio destacado
             Text(
-                text = "$${String.format("%.2f", product.price)}",
+                text = "$${product.price.toInt()}",
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFFF38A1D)

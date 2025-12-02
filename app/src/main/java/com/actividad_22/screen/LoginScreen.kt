@@ -37,13 +37,22 @@ import com.actividad_22.viewmodel.MainViewModel
 import com.actividad_22.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
-// Colores
+// Definición de la paleta de colores personalizada para la pantalla.
+// Esto ayuda a mantener un estilo consistente y facilita los cambios de diseño.
+// Son variables "privadas", lo que significa que solo se pueden usar dentro de este archivo.
 private val DeepDarkBackground = Color(0xFF0F1218)
 private val CardSurface = Color(0xFF1A1F2E)
 private val AccentColor = Color(0xFFF38A1D)
 private val SecondaryText = Color(0xFF8B92A8)
 private val OutlineColor = Color(0xFF2A3142)
 
+/**
+ * Define la pantalla de inicio de sesión de la aplicación.
+ *
+ * @param navController El controlador que permite navegar entre pantallas.
+ * @param viewModel El modelo de vista principal para la navegación.
+ * @param userViewModel El modelo de vista que gestiona la lógica de usuario (como el login).
+ */
 @Composable
 fun LoginScreen(
     navController: NavController,
@@ -51,16 +60,26 @@ fun LoginScreen(
     userViewModel: UserViewModel
 ) {
     val context = LocalContext.current
+    // `sessionManager` se encarga de guardar y recuperar los datos del usuario que ha iniciado sesión.
     val sessionManager = remember { SessionManager(context) }
+    // `coroutine` permite ejecutar tareas largas (como llamar a una API) sin bloquear la interfaz.
     val coroutine = rememberCoroutineScope()
 
+    // `rememberSaveable` guarda el estado (el texto del email, contraseña, etc.)
+    // incluso si la pantalla se destruye y se vuelve a crear (por ejemplo, al girar el dispositivo).
+    // `email` guarda lo que el usuario escribe en el campo de correo.
     var email by rememberSaveable { mutableStateOf("") }
+    // `password` guarda lo que el usuario escribe en el campo de contraseña.
     var password by rememberSaveable { mutableStateOf("") }
+    // `showPassword` controla si la contraseña se muestra como texto o como puntos.
     var showPassword by rememberSaveable { mutableStateOf(false) }
+    // `isLoading` se usa para mostrar una animación de carga mientras se procesa el inicio de sesión.
     var isLoading by remember { mutableStateOf(false) }
 
+    // `Box` es un contenedor que apila sus elementos uno encima del otro.
     Box(
         modifier = Modifier
+            // Ocupa todo el espacio disponible.
             .fillMaxSize()
             .background(DeepDarkBackground)
     ) {
@@ -68,13 +87,16 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 24.dp)
+                // Permite desplazar la columna si el contenido no cabe en la pantalla.
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // `Spacer` añade un espacio vertical para separar elementos.
             Spacer(modifier = Modifier.height(60.dp))
 
-            // Logo
+            // Contenedor para el logo con un efecto de resplandor.
             Box(
+                // Define el tamaño y el estilo del fondo.
                 modifier = Modifier
                     .size(120.dp)
                     .background(
@@ -88,6 +110,7 @@ fun LoginScreen(
                     ),
                 contentAlignment = Alignment.Center
             ) {
+                // Muestra la imagen del logo.
                 Image(
                     painter = painterResource(id = R.drawable.factorio),
                     contentDescription = "Logo",
@@ -97,7 +120,7 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Título
+            // Texto principal de bienvenida.
             Text(
                 text = "Bienvenido",
                 fontSize = 32.sp,
@@ -107,6 +130,7 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            // Subtítulo o texto de instrucción.
             Text(
                 text = "Inicia sesión para continuar",
                 fontSize = 16.sp,
@@ -116,11 +140,13 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(48.dp))
 
-            // Campo Email
+            // Campo de texto para que el usuario introduzca su correo electrónico.
             OutlinedTextField(
                 value = email,
+                // `onValueChange` actualiza la variable `email` cada vez que el usuario escribe.
                 onValueChange = { email = it },
                 label = { Text("Correo electrónico", color = SecondaryText) },
+                // `leadingIcon` es un icono que aparece al principio del campo de texto.
                 leadingIcon = {
                     Icon(
                         Icons.Default.Email,
@@ -128,8 +154,10 @@ fun LoginScreen(
                         tint = AccentColor
                     )
                 },
+                // Asegura que el texto no se divida en varias líneas.
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                // Ocupa todo el ancho disponible.
                 modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = CardSurface,
@@ -145,11 +173,12 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Campo Password
+            // Campo de texto para la contraseña.
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
                 label = { Text("Contraseña", color = SecondaryText) },
+                // Icono de candado.
                 leadingIcon = {
                     Icon(
                         Icons.Default.Lock,
@@ -157,6 +186,7 @@ fun LoginScreen(
                         tint = AccentColor
                     )
                 },
+                // Icono para mostrar/ocultar la contraseña.
                 trailingIcon = {
                     IconButton(onClick = { showPassword = !showPassword }) {
                         Icon(
@@ -167,6 +197,8 @@ fun LoginScreen(
                     }
                 },
                 singleLine = true,
+                // `visualTransformation` cambia la apariencia del texto (por ejemplo, a puntos para la contraseña).
+                // Se alterna entre oculto y visible según el valor de `showPassword`.
                 visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth(),
@@ -184,21 +216,28 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Botón Login
+            // Botón para iniciar sesión.
             Button(
                 onClick = {
+                    // Se inicia una corrutina para realizar la operación de red sin congelar la app.
                     coroutine.launch {
+                        // Muestra el indicador de carga.
                         isLoading = true
+                        // Llama a la función de login del `userViewModel`.
                         val client = userViewModel.login(email, password)
+                        // Oculta el indicador de carga.
                         isLoading = false
 
+                        // Si el inicio de sesión es exitoso (`client` no es nulo)...
                         if (client != null) {
-                            // Guardar sesión
+                            // Guarda los datos del usuario para mantener la sesión iniciada.
                             sessionManager.saveUserSession(
                                 userId = client.id_client,
                                 email = client.email_client,
                                 name = client.name_client
                             )
+                            // Navega a la pantalla de inicio (`Home`) y elimina la pantalla de login del historial,
+                            // para que el usuario no pueda volver atrás.
                             navController.navigate(Screen.Home.route) {
                                 popUpTo(Screen.Login.route) { inclusive = true }
                             }
@@ -217,15 +256,18 @@ fun LoginScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = AccentColor
                 ),
+                // Esquinas redondeadas para el botón.
                 shape = RoundedCornerShape(16.dp),
+                // El botón se deshabilita mientras `isLoading` es verdadero.
                 enabled = !isLoading
             ) {
+                // Muestra un círculo de carga si `isLoading` es verdadero.
                 if (isLoading) {
                     CircularProgressIndicator(
                         color = Color.White,
                         modifier = Modifier.size(24.dp)
                     )
-                } else {
+                } else { // Si no, muestra el texto "Iniciar Sesión".
                     Text(
                         "Iniciar Sesión",
                         fontSize = 18.sp,
@@ -237,8 +279,9 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Botón Registro
+            // Texto con un botón para navegar a la pantalla de registro.
             TextButton(
+                // Cuando se hace clic, navega a la pantalla de registro.
                 onClick = { viewModel.navigateTo(Screen.Register) }
             ) {
                 Text(
@@ -259,53 +302,5 @@ fun LoginScreen(
     }
 }
 
-/*
-* ANÁLISIS DE ESTILOS UTILIZADOS EN LoginScreen
-*
-* GAMA DE COLORES (Paleta Oscura "Dark Mode"):
-* - DeepDarkBackground (0xFF0F1218): Un azul muy oscuro, casi negro, usado para el fondo principal de la pantalla.
-* - CardSurface (0xFF1A1F2E): Un azul oscuro grisáceo, usado como fondo para los campos de texto (OutlinedTextField).
-* - AccentColor (0xFFF38A1D): Un naranja vibrante, utilizado como color de acento principal. Se usa en:
-*   - El resplandor radial detrás del logo.
-*   - Los iconos dentro de los campos de texto (Email, Lock).
-*   - El borde de los campos de texto cuando están enfocados.
-*   - El color del cursor en los campos de texto.
-*   - El color de fondo del botón principal "Iniciar Sesión".
-*   - El texto "Crear una" para incitar al registro.
-* - SecondaryText (0xFF8B92A8): Un gris azulado claro, para textos secundarios y elementos de menor énfasis. Se usa en:
-*   - El subtítulo "Inicia sesión para continuar".
-*   - Las etiquetas (label) de los campos de texto.
-*   - El icono de visibilidad de la contraseña.
-*   - El texto "¿No tienes cuenta? ".
-* - OutlineColor (0xFF2A3142): Un azul grisáceo, para los bordes de los campos de texto cuando no están enfocados.
-* - Color.White (0xFFFFFFFF): Blanco puro, para textos principales de alta visibilidad. Se usa en:
-*   - El título "Bienvenido".
-*   - El texto introducido por el usuario en los campos de texto.
-*   - El texto del botón "Iniciar Sesión".
-*   - El indicador de carga (CircularProgressIndicator).
-* - Color.Transparent (0x00000000): Usado en el degradado del logo para crear un efecto de desvanecimiento.
-*
-* FUENTES (Tipografía):
-* - Se utiliza la fuente por defecto del sistema Android (Roboto).
-* - Pesos de fuente (FontWeight):
-*   - FontWeight.Bold: Para textos que requieren mayor énfasis, como el título "Bienvenido", el texto del botón "Iniciar Sesión" y el enlace "Crear una".
-*   - FontWeight.Normal: Para textos con énfasis estándar, como el subtítulo.
-* - Tamaños de fuente (fontSize):
-*   - 32.sp: Para el título principal ("Bienvenido").
-*   - 18.sp: Para el texto del botón principal.
-*   - 16.sp: Para el subtítulo.
-*   - 14.sp: Para el texto del botón de registro ("¿No tienes cuenta? Crear una").
-*
-* FORMAS Y BORDES (Shapes):
-* - RoundedCornerShape(60.dp): Se usa para crear un círculo perfecto para el fondo del logo (dado que el tamaño del Box es 120.dp, un radio de la mitad del tamaño crea un círculo).
-* - RoundedCornerShape(16.dp): Se aplica a los campos de texto (OutlinedTextField) y al botón principal "Iniciar Sesión" para darles esquinas notablemente redondeadas.
-*
-* EFECTOS VISUALES:
-* - Brush.radialGradient: Se utiliza para crear un efecto de resplandor o aura detrás del logo, usando el `AccentColor` con transparencia y desvaneciéndose a `Color.Transparent`.
-*
-* ICONOGRAFÍA:
-* - Se utilizan iconos predefinidos de Material Icons:
-*   - `Icons.Default.Email`: Para el campo de correo.
-*   - `Icons.Default.Lock`: Para el campo de contraseña.
-*   - `Icons.Default.Visibility` / `Icons.Default.VisibilityOff`: Para alternar la visibilidad de la contraseña.
-*/
+// El bloque de comentarios original con el análisis de estilos ha sido eliminado para mayor claridad
+// y reemplazado por comentarios en línea a lo largo del código.

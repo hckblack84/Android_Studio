@@ -39,10 +39,21 @@ import com.actividad_22.viewmodel.ProductViewModel
 import com.actividad_22.viewmodel.UserViewModel
 import kotlinx.coroutines.flow.collectLatest
 
+/**
+ * MainActivity es la pantalla principal de la aplicación.
+ * Configura la navegación y las bases de datos necesarias para que todo funcione.
+ */
 class MainActivity : ComponentActivity() {
+    /**
+     * onCreate se llama cuando la actividad se crea por primera vez.
+     * Aquí se configura la interfaz de usuario y se inicializa todo.
+     * @param savedInstanceState Si la actividad se está recreando, este paquete contiene los datos que guardó anteriormente.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Permite que la aplicación ocupe toda la pantalla, incluyendo el área de la barra de estado.
         enableEdgeToEdge()
+        // setContent define la interfaz de usuario de la actividad utilizando Jetpack Compose.
         setContent {
             Actividad_22Theme {
                 val viewModel: MainViewModel = viewModel()
@@ -65,32 +76,43 @@ class MainActivity : ComponentActivity() {
                     }
                 )
 
+                // Prepara el gestor de datos para las publicaciones.
                 val postViewModel:PostViewModel = viewModel()
 
 
 
 
+                // Este bloque se ejecuta una sola vez y se encarga de escuchar los eventos de navegación.
+                // Cuando el viewModel pide navegar a otra pantalla, este código lo hace posible.
                 LaunchedEffect(key1 = Unit) {
                     viewModel.navigationEvents.collectLatest { event ->
                         when (event) {
+                            // Si el evento es para navegar a una ruta específica.
                             is NavigationEvent.Navigateto -> {
                                 navController.navigate(event.route.route) {
+                                    // Opcionalmente, puede limpiar el historial de navegación hasta una pantalla específica.
                                     event.popUpToRoute?.let {
                                         popUpTo(it.route) {
                                             inclusive = event.inclusive
                                         }
                                     }
+                                    // Evita crear múltiples copias de la misma pantalla.
                                     launchSingleTop = event.singleTop
+                                    // Restaura el estado de la pantalla si volvemos a ella.
                                     restoreState = true
                                 }
                             }
 
+                            // Si el evento es para volver a la pantalla anterior.
                             is NavigationEvent.popBackStack -> navController.popBackStack()
+                            // Si el evento es para subir un nivel en la jerarquía de navegación.
                             is NavigationEvent.NavigateUp -> navController.navigateUp()
                         }
                     }
                 }
 
+                // Scaffold es un diseño básico que proporciona una estructura para la pantalla
+                // (como barras superiores, cajones de navegación, etc.).
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) { innerPadding ->
@@ -99,43 +121,50 @@ class MainActivity : ComponentActivity() {
                         startDestination = Screen.Start.route,
                         modifier = Modifier.padding(innerPadding)
                     ) {
+                        // Define la pantalla de inicio.
                         composable(route = Screen.Start.route) {
                             StartScreen(navController = navController, viewModel = viewModel)
                         }
 
+                        // Define la pantalla principal después de iniciar sesión.
                         composable(route = Screen.Home.route) {
                             HomeScreen(navController = navController, viewModel = viewModel)
                         }
 
+                        // Define la pantalla de perfil del usuario.
                         composable(route = Screen.Profile.route) {
                             val userViewModel: UserViewModel = viewModel(factory = userFactory)
                             ProfileScreen(
                                 navController = navController,
-                                mainViewModel = viewModel, // <--- ¡CORRECCIÓN APLICADA AQUÍ!
+                                mainViewModel = viewModel, // Pasa el gestor de datos principal.
                                 userViewModel = userViewModel
                             )
                         }
 
+                        // Define la pantalla de configuración.
                         composable(route = Screen.Settings.route) {
                             SettingsScreen(navController = navController, viewModel = viewModel)
                         }
 
+                        // Define la pantalla de la tienda.
                         composable(route = Screen.Store.route) {
                             val postViewModel: PostViewModel = viewModel()
                             StoreScreen(navController = navController, viewModel = viewModel, productViewModel = productViewModel, postViewModel = postViewModel)
                         }
 
+                        // Define una ruta para mostrar productos por categoría (actualmente sin usar).
                         composable(route = "category/{categoryId}") { backStackEntry ->
                             val categoryId = backStackEntry.arguments?.getString("categoryId")
 
                         }
 
 
-
+                        // Define la pantalla de eventos.
                         composable(route = Screen.Event.route) {
                             EventScreen(navController = navController, viewModel = viewModel)
                         }
 
+                        // Define la pantalla de registro de nuevos usuarios.
                         composable(route = Screen.Register.route) {
                             val userViewModel: UserViewModel = viewModel(factory = userFactory)
                             RegisterScreen(
@@ -144,6 +173,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
+                        // Define la pantalla de inicio de sesión.
                         composable(route = Screen.Login.route) {
                             val userViewModel: UserViewModel = viewModel(factory = userFactory)
                             LoginScreen(
@@ -152,6 +182,7 @@ class MainActivity : ComponentActivity() {
                                 userViewModel = userViewModel
                             )
                         }
+                        // Define la pantalla de resumen.
                         composable(Screen.Summary.route) {
                             val userViewModel: UserViewModel = viewModel(factory = userFactory)
                             SummaryScreen(
@@ -159,6 +190,7 @@ class MainActivity : ComponentActivity() {
                                 userViewModel = userViewModel
                             )
                         }
+                        // Define la pantalla del carrito de compras.
                         composable (Screen.Cart.route){
                             val userViewModel: UserViewModel = viewModel(factory = userFactory)
                             CartScreen(
@@ -169,9 +201,11 @@ class MainActivity : ComponentActivity() {
                                 postViewModel = postViewModel
                             )
                         }
+                        // Define la pantalla para ver una publicación específica.
                         composable (Screen.Post.route){
                             PostScreen(postViewModel, viewModel)
                         }
+                        // Define la pantalla para ver una publicación agregada al carrito.
                         composable (Screen.PostCart.route) {
                             PostCartScreen(
                                 navController = navController,

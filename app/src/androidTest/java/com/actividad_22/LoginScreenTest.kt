@@ -1,5 +1,6 @@
 package com.actividad_22
 
+/** Este archivo contiene pruebas para la pantalla de inicio de sesión (LoginScreen). */
 // In app/src/test/java/com/actividad_22/screen/LoginScreenTest.ktpackage com.actividad_22.screen
 
 import androidx.compose.ui.test.*
@@ -16,65 +17,71 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+/**
+ * Define una clase de prueba para la pantalla de inicio de sesión (LoginScreen).
+ * Su objetivo es asegurarse de que la interfaz de usuario se comporte como se espera.
+ */
 class LoginScreenTest {
 
-    // This rule provides a test environment for Jetpack Compose UI.
+    // Prepara el entorno necesario para probar componentes de la interfaz de usuario de Compose.
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    // Mocks for dependencies that LoginScreen needs.
-    // We use mockk() to create dummy versions of these classes.
+    // Versiones "falsas" o simuladas de las clases que necesita LoginScreen para funcionar.
+    // Las usamos para controlar el comportamiento y verificar las interacciones durante la prueba.
     private lateinit var mockNavController: NavController
     private lateinit var mockMainViewModel: MainViewModel
     private lateinit var mockUserViewModel: UserViewModel
 
+    /**
+     * Esta función se ejecuta antes de cada prueba.
+     * Se encarga de inicializar las versiones simuladas y de cargar la pantalla de inicio de sesión.
+     */
     @Before
     fun setUp() {
-        // Initialize mocks before each test
-        mockNavController = mockk(relaxed = true) // relaxed = true allows the mock to ignore calls we don't explicitly verify
+        // Crea las versiones simuladas de nuestras clases. 'relaxed = true' permite que ignoren llamadas que no nos interesan para la prueba.
+        mockNavController = mockk(relaxed = true)
         mockMainViewModel = mockk(relaxed = true)
         mockUserViewModel = mockk(relaxed = true)
 
-        // Set the content for the test. This is where we call our LoginScreen.
+        // Carga la pantalla de LoginScreen en el entorno de prueba con las dependencias simuladas.
         composeTestRule.setContent {
             LoginScreen(
-                navController = mockNavController,
-                viewModel = mockMainViewModel,
-                userViewModel = mockUserViewModel
+                navController = mockNavController, // El controlador de navegación falso.
+                viewModel = mockMainViewModel, // El modelo de vista principal falso.
+                userViewModel = mockUserViewModel // El modelo de vista de usuario falso.
             )
         }
     }
 
-    // Add this inside the LoginScreenTest class
-
+    /**
+     * Prueba para verificar que todos los elementos iniciales de la pantalla de inicio de sesión se muestran correctamente.
+     */
     @Test
     fun loginScreen_initialState_displaysAllElements() {
-        // 1. Check if the title "Bienvenido" is displayed
+        // 1. Comprueba si el título "Bienvenido" es visible.
         composeTestRule.onNodeWithText("Bienvenido").assertIsDisplayed()
 
-        // 2. Check for the email input field using its label
+        // 2. Comprueba si el campo para el correo electrónico es visible.
         composeTestRule.onNodeWithText("Correo electrónico").assertIsDisplayed()
 
-        // 3. Check for the password input field
+        // 3. Comprueba si el campo para la contraseña es visible.
         composeTestRule.onNodeWithText("Contraseña").assertIsDisplayed()
 
-        // 4. Check if the "Iniciar Sesión" button is displayed and enabled
+        // 4. Comprueba si el botón "Iniciar Sesión" es visible y se puede pulsar.
         composeTestRule.onNodeWithText("Iniciar Sesión").assertIsDisplayed().assertIsEnabled()
 
-        // 5. Check if the "Crear una" button is displayed
+        // 5. Comprueba si el botón para crear una cuenta ("Crear una") es visible.
         composeTestRule.onNodeWithText("Crear una").assertIsDisplayed()
     }
 
-
-    // Add this inside the LoginScreenTest class
-// You may need to add: import io.mockk.coEvery
-
+    /**
+     * Prueba que al hacer clic en el botón "Iniciar Sesión" con datos válidos, se llama a la función de login.
+     */
     @Test
     fun loginButton_whenClickedWithValidInput_callsViewModel() {
-        // Arrange: Mock the behavior of userViewModel.login.
-        // We don't care about the return value for this test, so we can keep it simple.
-        // coEvery is used for suspend functions.
-        coEvery { mockUserViewModel.login(any(), any()) } returns null // Simulate a failed login first to test the click
+        // Preparación: Le decimos al modelo de vista falso cómo debe comportarse cuando se llame a su función 'login'.
+        coEvery { mockUserViewModel.login(any(), any()) } returns null // Simulamos que el login falla para centrarnos solo en la llamada.
 
         // Act: Find the input fields and perform actions
         val emailField = composeTestRule.onNodeWithText("Correo electrónico")
@@ -85,14 +92,12 @@ class LoginScreenTest {
         emailField.performTextInput("test@example.com")
         passwordField.performTextInput("password123")
 
-        // Click the button
+        // Hacemos clic en el botón de iniciar sesión.
         loginButton.performClick()
 
-        // Assert: Verify that the login function on the ViewModel was called
-        // We use `verify` from MockK to check if the function was executed.
+        // Verificación: Confirmamos que la función 'login' del modelo de vista de usuario fue llamada con los datos que escribimos.
         verify { runBlocking { mockUserViewModel.login("test@example.com", "password123") } }
     }
-
 
 
 }

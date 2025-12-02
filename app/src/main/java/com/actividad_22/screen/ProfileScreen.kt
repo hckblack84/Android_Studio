@@ -44,18 +44,28 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
-// Colores
+// Definición de los colores utilizados en la pantalla para mantener un estilo coherente.
 private val DeepDarkBackground = Color(0xFF0F1218)
 private val CardSurface = Color(0xFF1A1F2E)
 private val AccentColor = Color(0xFFF38A1D)
 private val SecondaryText = Color(0xFF8B92A8)
 private val OutlineColor = Color(0xFF2A3142)
 
+/**
+ * Composable principal que construye la pantalla de perfil del usuario.
+ *
+ * Esta pantalla permite al usuario ver su información, editarla, cambiar su foto de perfil
+ * y cerrar sesión. También maneja el caso en que ningún usuario ha iniciado sesión.
+ *
+ * @param navController Controlador de navegación para moverse entre pantallas.
+ * @param mainViewModel ViewModel principal de la aplicación para la navegación.
+ * @param userViewModel ViewModel para gestionar los datos del usuario.
+ */
 @Composable
 fun ProfileScreen(
     navController: NavController,
     mainViewModel: MainViewModel,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel // ViewModel para obtener y actualizar la información del cliente
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
@@ -65,12 +75,12 @@ fun ProfileScreen(
     val currentClient by userViewModel.currentClient.collectAsState()
     var isEditMode by remember { mutableStateOf(false) }
 
-    // Estados de la cámara
+    // Variables para manejar la imagen de perfil (URI, diálogo de selección, URI temporal).
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var showDialog by remember { mutableStateOf(false) }
     var tempPhotoUri by remember { mutableStateOf<Uri?>(null) }
 
-    // Estados para edición
+    // Variables para almacenar los datos del usuario mientras se editan.
     var editName by remember { mutableStateOf("") }
     var editEmail by remember { mutableStateOf("") }
     var editPassword by remember { mutableStateOf("") }
@@ -78,7 +88,7 @@ fun ProfileScreen(
     var showPassword by remember { mutableStateOf(false) }
 
     // Cargar cliente al iniciar si hay sesión
-    LaunchedEffect(Unit) {
+    LaunchedEffect(Unit) { // Se ejecuta una sola vez cuando la pantalla se muestra.
         val userId = sessionManager.getUserId()
         if (userId != -1L) {
             userViewModel.loadClientById(userId)
@@ -86,7 +96,7 @@ fun ProfileScreen(
     }
 
     // Actualizar campos cuando cambie el cliente
-    LaunchedEffect(currentClient) {
+    LaunchedEffect(currentClient) { // Se ejecuta cada vez que 'currentClient' cambia.
         currentClient?.let {
             editName = it.name_client
             editEmail = it.email_client
@@ -95,7 +105,7 @@ fun ProfileScreen(
         }
     }
 
-    // Launchers de cámara y galería
+    //ActivityResultLauncher para manejar el resultado de tomar una foto con la cámara.
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
     ) { success ->
@@ -107,6 +117,7 @@ fun ProfileScreen(
         }
     }
 
+    // ActivityResultLauncher para manejar el resultado de seleccionar una imagen de la galería.
     val galleryLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -116,6 +127,7 @@ fun ProfileScreen(
         }
     }
 
+    // ActivityResultLauncher para solicitar el permiso de la cámara.
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -126,6 +138,7 @@ fun ProfileScreen(
         }
     }
 
+    // Contenedor principal de la pantalla con un fondo oscuro.
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -137,7 +150,7 @@ fun ProfileScreen(
                 .padding(bottom = 100.dp)
                 .verticalScroll(scrollState)
         ) {
-            // Header del perfil con foto
+            // Encabezado que muestra la foto de perfil, nombre y email.
             ProfileHeaderWithCamera(
                 client = currentClient,
                 imageUri = imageUri,
@@ -153,9 +166,11 @@ fun ProfileScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
+            // Se comprueba si hay un usuario con sesión iniciada.
             if (currentClient != null) {
+                // Si el modo de edición está activo, muestra el formulario.
                 if (isEditMode) {
-                    // Modo edición
+                    // Formulario para editar los datos del perfil.
                     EditProfileForm(
                         name = editName,
                         onNameChange = { editName = it },
@@ -169,7 +184,7 @@ fun ProfileScreen(
                         onTogglePassword = { showPassword = !showPassword },
                         onSave = {
                             coroutineScope.launch {
-                                // Aquí se usa .copy()
+                                // Crea una copia del cliente actual con los datos actualizados.
                                 val updatedClient = currentClient!!.copy(
                                     name_client = editName,
                                     email_client = editEmail,
@@ -197,12 +212,12 @@ fun ProfileScreen(
                         }
                     )
                 } else {
-                    // Modo visualización
+                    // Si no está en modo edición, muestra la información del perfil.
                     ProfileInfo(client = currentClient!!)
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Opciones del perfil
+                    // Muestra opciones adicionales, como el botón para cerrar sesión.
                     ProfileOptions(
                         onLogout = {
                             sessionManager.clearSession()
@@ -214,7 +229,7 @@ fun ProfileScreen(
                     )
                 }
             } else {
-                // No hay usuario logueado
+                // Si no hay sesión iniciada, muestra un mensaje y un botón para ir al login.
                 NoUserLoggedIn(
                     onLoginClick = {
                         navController.navigate(Screen.Login.route) {
@@ -227,7 +242,7 @@ fun ProfileScreen(
             Spacer(modifier = Modifier.height(32.dp))
         }
 
-
+        // Barra de navegación flotante en la parte inferior.
         FloatingBottomBar(
             onHomeClick = { mainViewModel.navigateTo(Screen.Home) },
             onEventClick = { mainViewModel.navigateTo(Screen.Event) },
@@ -240,7 +255,7 @@ fun ProfileScreen(
 
     }
 
-    // Diálogo de selección de imagen
+    // Muestra un diálogo para elegir entre cámara y galería si 'showDialog' es verdadero.
     if (showDialog) {
         ImagePickerDialog(
             onDismiss = { showDialog = false },
@@ -258,8 +273,18 @@ fun ProfileScreen(
     }
 }
 
-// RESTO DE LOS COMPOSABLES (ProfileHeaderWithCamera, ImagePickerDialog, ProfileInfo, InfoCard, EditProfileForm, ProfileOptions, NoUserLoggedIn, createImageUri)
-
+/**
+ * Muestra el encabezado del perfil.
+ *
+ * Incluye la foto de perfil (avatar), el nombre del cliente, su email y un botón para
+ * entrar o salir del modo de edición.
+ *
+ * @param client El objeto cliente con los datos a mostrar.
+ * @param imageUri La URI de la imagen de perfil seleccionada por el usuario.
+ * @param onEditClick Función que se ejecuta al pulsar el botón de editar/cancelar.
+ * @param onCameraClick Función que se ejecuta al pulsar sobre la foto de perfil para cambiarla.
+ * @param isEditMode Booleano que indica si se está en modo de edición.
+ */
 @Composable
 fun ProfileHeaderWithCamera(
     client: Client?,
@@ -284,7 +309,7 @@ fun ProfileHeaderWithCamera(
     ) {
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Avatar con cámara
+        // Contenedor para el avatar y el botón de la cámara.
         Box(
             modifier = Modifier.size(120.dp)
         ) {
@@ -302,6 +327,7 @@ fun ProfileHeaderWithCamera(
                     )
                     .clickable(onClick = onCameraClick),
                 contentAlignment = Alignment.Center
+                // Muestra la imagen seleccionada o un icono de persona por defecto.
             ) {
                 if (imageUri != null) {
                     AsyncImage(
@@ -320,7 +346,7 @@ fun ProfileHeaderWithCamera(
                 }
             }
 
-            // Botón de cámara en la esquina
+            // Pequeño botón de cámara superpuesto en la esquina inferior derecha del avatar.
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -341,7 +367,7 @@ fun ProfileHeaderWithCamera(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Nombre
+        // Muestra el nombre del cliente.
         Text(
             text = client?.name_client ?: "",
             fontSize = 28.sp,
@@ -351,7 +377,7 @@ fun ProfileHeaderWithCamera(
 
         Spacer(modifier = Modifier.height(4.dp))
 
-        // Email
+        // Muestra el email del cliente.
         Text(
             text = client?.email_client ?: "",
             fontSize = 14.sp,
@@ -361,7 +387,7 @@ fun ProfileHeaderWithCamera(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Botón editar
+        // Botón para activar/desactivar el modo de edición.
         if (client != null) {
             Button(
                 onClick = onEditClick,
@@ -389,6 +415,14 @@ fun ProfileHeaderWithCamera(
     }
 }
 
+/**
+ * Muestra un diálogo de alerta para que el usuario elija entre tomar una foto
+ * con la cámara o seleccionarla desde la galería.
+ *
+ * @param onDismiss Función que se ejecuta cuando se cierra el diálogo.
+ * @param onCameraClick Función que se ejecuta al pulsar el botón "Tomar foto".
+ * @param onGalleryClick Función que se ejecuta al pulsar el botón "Elegir de galería".
+ */
 @Composable
 fun ImagePickerDialog(
     onDismiss: () -> Unit,
@@ -479,6 +513,12 @@ fun ImagePickerDialog(
     )
 }
 
+/**
+ * Muestra la información personal del cliente en una serie de tarjetas.
+ * Esta es la vista de "solo lectura" del perfil.
+ *
+ * @param client El objeto cliente cuyos datos se van a mostrar.
+ */
 @Composable
 fun ProfileInfo(client: Client) {
     Column(
@@ -522,6 +562,14 @@ fun ProfileInfo(client: Client) {
     }
 }
 
+/**
+ * Una tarjeta reutilizable para mostrar un dato específico del perfil.
+ * Muestra un ícono, una etiqueta (ej. "Nombre") y el valor correspondiente.
+ *
+ * @param icon El ícono que representa el dato.
+ * @param label La etiqueta del dato (ej. "Email").
+ * @param value El valor del dato (ej. "usuario@email.com").
+ */
 @Composable
 fun InfoCard(
     icon: ImageVector,
@@ -576,6 +624,24 @@ fun InfoCard(
     }
 }
 
+/**
+ * Formulario para editar la información del perfil del usuario.
+ * Contiene campos de texto para el nombre, email, contraseña y dirección,
+ * así como botones para guardar los cambios o cancelar la edición.
+ *
+ * @param name Valor actual del campo nombre.
+ * @param onNameChange Función que se ejecuta cuando el nombre cambia.
+ * @param email Valor actual del campo email.
+ * @param onEmailChange Función que se ejecuta cuando el email cambia.
+ * @param password Valor actual del campo contraseña.
+ * @param onPasswordChange Función que se ejecuta cuando la contraseña cambia.
+ * @param direction Valor actual del campo dirección.
+ * @param onDirectionChange Función que se ejecuta cuando la dirección cambia.
+ * @param showPassword Booleano para mostrar u ocultar la contraseña.
+ * @param onTogglePassword Función para cambiar la visibilidad de la contraseña.
+ * @param onSave Función para guardar los cambios.
+ * @param onCancel Función para cancelar la edición.
+ */
 @Composable
 fun EditProfileForm(
     name: String,
@@ -745,6 +811,11 @@ fun EditProfileForm(
     }
 }
 
+/**
+ * Muestra las opciones de la cuenta, como el botón para cerrar sesión.
+ *
+ * @param onLogout Función que se ejecuta al pulsar el botón de cerrar sesión.
+ */
 @Composable
 fun ProfileOptions(onLogout: () -> Unit) {
     Column(
@@ -814,6 +885,12 @@ fun ProfileOptions(onLogout: () -> Unit) {
     }
 }
 
+/**
+ * Composable que se muestra cuando no hay ningún usuario con sesión iniciada.
+ * Muestra un mensaje informativo y un botón para redirigir a la pantalla de inicio de sesión.
+ *
+ * @param onLoginClick Función que se ejecuta al pulsar el botón "Iniciar Sesión".
+ */
 @Composable
 fun NoUserLoggedIn(onLoginClick: () -> Unit) {
     Column(
@@ -876,6 +953,12 @@ fun NoUserLoggedIn(onLoginClick: () -> Unit) {
     }
 }
 
+/**
+ * Función de extensión para la clase `Context` que crea un archivo de imagen temporal
+ * en el almacenamiento interno de la aplicación y devuelve su URI.
+ * Esto es necesario para que la cámara pueda guardar la foto tomada.
+ * @return La URI del archivo de imagen creado.
+ */
 fun Context.createImageUri(): Uri {
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
     val imageFileName = "PROFILE_$timeStamp.jpg"

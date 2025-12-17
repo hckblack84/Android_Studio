@@ -5,6 +5,6 @@ import retrofit2.http.GET
 
 interface ApiService {
 
-    @GET("product/getAllProducts")
+    @GET("product/androidStudio")
     suspend fun getPosts(): List<ApiProduct>;
 }

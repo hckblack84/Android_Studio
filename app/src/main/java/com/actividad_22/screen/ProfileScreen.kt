@@ -85,6 +85,7 @@ fun ProfileScreen(
     var editEmail by remember { mutableStateOf("") }
     var editPassword by remember { mutableStateOf("") }
     var editDirection by remember { mutableStateOf("") }
+    var editCodePostal by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(false) }
 
     // Cargar cliente al iniciar si hay sesión
@@ -374,8 +375,9 @@ fun ProfileHeaderWithCamera(
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
-
         Spacer(modifier = Modifier.height(4.dp))
+
+
 
         // Muestra el email del cliente.
         Text(
@@ -559,6 +561,8 @@ fun ProfileInfo(client: Client) {
             label = "Contraseña",
             value = "••••••••"
         )
+
+
     }
 }
 

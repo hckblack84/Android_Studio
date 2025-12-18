@@ -9,5 +9,5 @@ data class Client( // <-- Se agregó la palabra clave 'data'
     val name_client:String,
     val email_client:String,
     val password_client:String,
-    val direction_client:String
+    val direction_client:String,
 )

@@ -7,7 +7,7 @@ import com.actividad_22.data.local.Client
 import com.actividad_22.data.repository.ClientRepository
 import com.actividad_22.navigation.UserUiState
 import com.actividad_22.navigation.UsuarioError
-import com.actividad_22.tools.EmailVerified
+import com.actividad_22.screen.tools.EmailVerified
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
@@ -122,6 +122,9 @@ open class UserViewModel(private val clientRepository: ClientRepository) : ViewM
     fun onDirreccionChange(valor: String) {
         _estado.update { it.copy(direccion = valor, errores = it.errores.copy(direccion = null)) }
     }
+
+
+
 
     /** Actualiza si el usuario aceptó o no los términos y condiciones. */
     fun onAceptaTerminosChange(valor: Boolean) {
